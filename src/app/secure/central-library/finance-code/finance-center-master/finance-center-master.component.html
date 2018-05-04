@@ -1,0 +1,129 @@
+<h2 class="ttl2 text-center">Employee Classification</h2>
+<div class="row">
+</div>
+<div class="table-responsive text-center">
+  <table class="table-striped table">
+    <thead>
+      <tr>
+        <th>Effective From</th>
+        <th>Province</th>
+        <th>Finance Centre Code</th>
+        <th>Employee - Unit of Pay Rates</th>
+        <th>Employee Pay Roll Cycles</th>
+        <th>Regular Pay and Allowances Codes</th>
+        <th>Non Regular Pay and Allowances Codes</th>
+        <th>Super Fund / Provident Fund Codes</th>
+        <th>Tax Codes, Rates & Rules</th>
+        <th>Pay Deduction Codes</th>
+        <th>Tax Payment Receiver</th>
+        <th>Status ( Auto update)</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- <tr *ngFor="let employee of List | filterPipe: (mCode) ? mCode:((mName)?mName :mStatus) : (mCode) ? 'measurement_code': ((mName)?'measurement_name' :'status'
+      );let i=index;" (click)="viewRecord(employee)">
+        <td>
+          <div class="cust-check" (click)="selectedRecords(employee,$event)">
+            <input type="checkbox" [checked]="employee.checked==true" />
+            <label></label>
+          </div>
+
+        </td>
+        <td>{{employee.code}}</td>
+        <td>{{employee.name}}</td>
+        <td>{{employee.measureUnitTO.name}}</td>
+        <td>{{employee.status}}</td>
+      </tr> -->
+
+
+    </tbody>
+  </table>
+  <div>
+    <h1>No Service</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col col-sm-6">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">1</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">2</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">3</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="col col-sm-6">
+    <button class="btn btn-primary pull-right" [routerLink]="['/secure/central/employee-create']" type="button">Create</button>
+  </div>
+</div>
+
+<div class="modal fade" id="tanantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tenant details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="tenantDetails!==undefined">
+        <div class="tenantDetails">
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,586 @@
+<!-- fixed header layout -->
+<section id="layout_header">
+  <div class="row">
+    <div class="col col-sm-4">
+      <h2 class="ttl2">Suppliers</h2>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.cmpCode' type="text" required placeholder="Company ID">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.cmpName' type="text" required placeholder="Company name">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <select class="form-control cust-input" [(ngModel)]='request.status'>
+          <option disabled>Status</option>
+          <option value="1">Active</option>
+          <option value="0">InActive</option>
+        </select>
+      </div>
+    </div>
+    <div class="col search_btn text-right col-2">
+      <button>
+        <i class="fa fa-search" (click)="getList()"></i>
+      </button>
+      <button>
+        <i class="fa fa-refresh" (click)="reset();"></i>
+      </button>
+    </div>
+  </div>
+  <table class="table tbl_head">
+    <colgroup>
+      <col style="width:5%;" />
+      <col style="width:7%;" />
+      <col style="width:15%;" />
+      <col style="width:10%;" />
+      <col style="width:10%;" />
+      <col style="width:15%;" />
+      <col style="width:10%;" />
+      <col style="width:10%;" />
+      <col style="width:8%;" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Company ID</th>
+        <th>Company Name</th>
+        <th>Company Category</th>
+        <th>Bussiness Category</th>
+        <th>Bussiness Activity</th>
+        <th>Reg No</th>
+        <th>Tax File No</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+  </table>
+</section>
+<!-- fixed header layout -->
+
+<!-- fixed content layout -->
+<section id="main_content">
+  <div class="slimScroll TwoRowLayout">
+    <div class="table-responsive text-center">
+      <table class="table-striped table tbl_body">
+        <colgroup>
+          <col style="width:5%;" />
+          <col style="width:7%;" />
+          <col style="width:15%;" />
+          <col style="width:10%;" />
+          <col style="width:10%;" />
+          <col style="width:15%;" />
+          <col style="width:10%;" />
+          <col style="width:10%;" />
+          <col style="width:8%;" />
+        </colgroup>
+        <tbody>
+          <tr *ngFor="let company of List | paginate: {id:'measuring', itemsPerPage: records, currentPage: p };let i=index;" (click)="viewRecord(company)">
+            <td (click)="selectedRecords(company,$event)" *ngIf="company.cmpCode">
+              <div class="cust-check">
+                <input type="checkbox" [checked]="company.checked" />
+                <label></label>
+              </div>
+            </td>
+            <td *ngIf="company.cmpCode">{{company.cmpCode || ''}}</td>
+            <td *ngIf="company.cmpCode">{{company.cmpName|| ''}}</td>
+            <td *ngIf="company.cmpCode">{{company.companyCatagoryTO.name|| ''}}</td>
+            <td *ngIf="company.cmpCode">{{company.businessCategoryTO.name|| ''}}</td>
+            <td *ngIf="company.cmpCode">{{company.cmpActivity|| ''}}</td>
+            <td *ngIf="company.cmpCode">{{company.regNo|| ''}}</td>
+            <td *ngIf="company.cmpCode">{{company.taxFileNo|| ''}}</td>
+            <td *ngIf="company.cmpCode">{{company.status | status}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</section>
+<!-- fixed content layout -->
+
+<!-- fixed footer layout -->
+<div class="tbl_footer btns text-right" id="layout_footer">
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col col-sm-9 text-right" style="display: inline-block">
+      <div class="row">
+        <div class="col col-sm-6 text-right">
+          <pagination-controls id="measuring" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="SupplierVE(1)">Edit</button>
+          <button type="button" class="btn btn-danger" [disabled]="!selectedlist.length>0" (click)="deleteTenant()">Deactivate</button>
+          <button type="button" class="btn btn-success" (click)="SupplierVE('')">Create new</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- fixed footer layout -->
+<section class="layoutTwo">
+  <div class="listtab sideTab row">
+    <div class="col col-md-1 col-sm-2 pr-0 pl-0 sidebarBG">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true">Address</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="projects" aria-selected="false">Current Projects</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="projects-tab" data-toggle="tab" href="#cloprojects" role="tab" aria-controls="projects" aria-selected="false">Closed Projects</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col col-md-11 col-sm-10 pl-0 pr-0">
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="address" role="tabpanel" aria-labelledby="address-tab">
+          <div class="table-responsive text-center">
+            <table class="table-plan table">
+              <thead>
+                <tr>
+                  <th>Address</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Pincode</th>
+                  <th>Select</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let address of selectedRecord.addressList">
+                  <td>{{address.address}}</td>
+                  <td>{{address.city}}</td>
+                  <td>{{address.state}}</td>
+                  <td>{{address.pincode}}</td>
+                  <td (click)="selectedaddressRecords(address,$event)">
+                    <div class="cust-check">
+                      <input type="checkbox" [checked]="address.checked" />
+                      <label></label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot style="background-color:#ffffff;">
+                <tr>
+                  <td colspan="9" align="right">
+                    <button type="button" class="btn btn-primary" (click)="editAddress()" [disabled]="selectedRecord.addressList.length==0 || selectedAddress.length!==1">Edit</button>
+                    <button type="button" class="btn btn-danger" [disabled]="selectedRecord.addressList.length==0 ||selectedAddress.length==0"
+                      (click)="deleteAddress()">Deactivate</button>
+                    <button type="button" class="btn btn-success" [disabled]="selectedlist.length!==1" data-toggle="modal" data-target="#addressinfo">Create new</button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          <div class="table-responsive text-center">
+            <table class="table-plan table">
+              <thead>
+                <tr>
+                  <th>Contact Name</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>Phone</th>
+                  <th>Fax</th>
+                  <th>Designation</th>
+                  <th>Select</th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let contact of selectedRecord.contacts">
+                  <td>{{contact.contactName}}</td>
+                  <td>{{contact.email}}</td>
+                  <td>{{contact.mobile}}</td>
+                  <td>{{contact.phone}}</td>
+                  <td>{{contact.fax}}</td>
+                  <td>{{contact.designation}}</td>
+                  <td (click)="selectedcontactRecords(contact,$event)">
+                    <div class="cust-check">
+                      <input type="checkbox" [checked]="contact.checked" />
+                      <label></label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot style="background-color:#ffffff;">
+                <tr>
+                  <td colspan="9" align="right">
+                    <button type="button" class="btn btn-primary" (click)="editContact()" [disabled]="selectedRecord.contacts.length==0 || selectedContact.length!==1">Edit</button>
+                    <button type="button" class="btn btn-danger" [disabled]="selectedRecord.contacts.length==0 ||selectedContact.length==0" (click)="deleteContact()">Deactivate</button>
+                    <button type="button" class="btn btn-success" [disabled]="selectedlist.length!==1" data-toggle="modal" data-target="#contactinfo">Create new</button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
+          <div class="table-responsive text-center">
+            <table class="table-plan table">
+              <thead>
+                <tr>
+                  <th>Project ID</th>
+                  <th>Project Name</th>
+                  <th>Contract Value</th>
+                  <th>Contract Start Date</th>
+                  <th>Expected Contract Finish Date</th>
+                  <th>Performance</th>
+                  <th>Select</th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let curproj of selectedRecord.currentProjs">
+                  <td>{{curproj.projCode}}</td>
+                  <td>{{curproj.projName}}</td>
+                  <td>{{curproj.contractValue}}</td>
+                  <td>{{curproj.startDate}}</td>
+                  <td>{{curproj.finishDate}}</td>
+                  <td>{{curproj.performance}}</td>
+                  <td (click)="selectedCurProjRecords(curproj,$event)">
+                    <div class="cust-check">
+                      <input type="checkbox" [checked]="curproj.checked" />
+                      <label></label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot style="background-color:#ffffff;">
+                <tr>
+                  <td colspan="9" align="right">
+                    <button type="button" class="btn btn-primary" (click)="moveClosed()" [disabled]="selectedRecord.currentProjs.length==0 ||selectedCurproj.length==0">Move to Closed</button>
+                    <button type="button" class="btn btn-primary" (click)="editProject()" [disabled]="selectedRecord.currentProjs.length==0 || selectedCurproj.length!==1">Edit</button>
+                    <button type="button" class="btn btn-danger" [disabled]="selectedRecord.currentProjs.length==0 ||selectedCurproj.length==0"
+                      (click)="deleteContact()">Deactivate</button>
+                    <button type="button" class="btn btn-success" [disabled]="selectedlist.length!==1" (click)="getProjects()" data-toggle="modal"
+                      data-target="#projectinfo">Create new</button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="cloprojects" role="tabpanel" aria-labelledby="projects-tab">
+          <div class="table-responsive text-center">
+            <table class="table-plan table">
+              <thead>
+                <tr>
+                  <th>Project ID</th>
+                  <th>Project Name</th>
+                  <th>Contract Value</th>
+                  <th>Contract Start Date</th>
+                  <th>Expected Contract Finish Date</th>
+                  <th>Performance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let curproj of selectedRecord.closedProjs">
+                  <td>{{curproj.projCode}}</td>
+                  <td>{{curproj.projName}}</td>
+                  <td>{{curproj.contractValue}}</td>
+                  <td>{{curproj.startDate}}</td>
+                  <td>{{curproj.finishDate}}</td>
+                  <td>{{curproj.performance}}</td>
+                </tr>
+              </tbody>
+              <tfoot style="background-color:#ffffff;">
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="modal fade" id="tanantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supplier Create/Edit</h5>
+        <button type="button" class="close" (click)="back()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="company_list_creation" (ngSubmit)="saveTenent(); ">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-md-4 col ">
+              <label for="companyid" class="form-label">Company ID</label>
+              <input type="text " formControlName="cmpCode" class="form-control form-input " id="companyid" (change)="verifyCode(code.value,0)"
+                #code required>
+              <app-error-messages [control]="company_list_creation.controls[ 'cmpCode']"></app-error-messages>
+              <span class="err_msg" *ngIf="isUnique.values[0]">Value should be unique</span>
+            </div>
+            <div class="form-group col-md-4 col">
+              <label for="companyname" class="form-label">Company Name</label>
+              <input type="text " formControlName="cmpName" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="company_list_creation.controls[ 'cmpName']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-4 col">
+              <label for="companycategory" class="form-label">Company Category</label>
+
+              <select class="form-control" id="companycategory" formControlName="catgId">
+                <option value="">select</option>
+                <option *ngFor="let company of supplierdata.companyCatgResp.companyCatagoryTOs || []" [value]="company.id">{{company.name}}</option>
+              </select>
+              <app-error-messages [control]="company_list_creation.controls[ 'catgId']"></app-error-messages>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-4 col">
+              <label for="businesscategory" class="form-label">Business Category</label>
+              <select class="form-control" id="businesscategory" formControlName="businessCategoryTO">
+                <option value="">select</option>
+                <option *ngFor="let company of supplierdata.businessCatgResp.businessCatagoryTOs || []" [value]="company.id">{{company.name}}</option>
+
+              </select>
+              <app-error-messages [control]="company_list_creation.controls[ 'businessCategoryTO']"></app-error-messages>
+
+            </div>
+            <div class="form-group col-md-4 col">
+              <label for="businessactivity" class="form-label">Business Activity</label>
+              <input type="text " formControlName="cmpActivity" class="form-control form-input " id="businessactivity" required>
+              <app-error-messages [control]="company_list_creation.controls[ 'cmpActivity']"></app-error-messages>
+
+            </div>
+            <div class="form-group col-md-4 col">
+              <label for="companyregno" class="form-label">Company RegNo</label>
+              <input type="text" formControlName="regNo" class="form-control form-input" id="companyregno" (change)="verifyCode(reg.value,1)"
+                #reg required>
+              <app-error-messages [control]="company_list_creation.controls[ 'regNo']"></app-error-messages>
+              <span class="err_msg" *ngIf="isUnique.values[1]">Value should be unique</span>
+
+            </div>
+          </div>
+          <div class="row align-items-end">
+            <div class="col-md-4 col">
+              <label for="companytaxno" class="form-label">Company TaxFileNo</label>
+              <input type="text" formControlName="taxFileNo" class="form-control form-input" (change)="verifyCode(tax.value,2)" #tax id="companytaxno"
+                required>
+              <app-error-messages [control]="company_list_creation.controls[ 'taxFileNo']"></app-error-messages>
+              <span class="err_msg" *ngIf="isUnique.values[2]">Value should be unique</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="company_list_creation.invalid || isUnique.values[0] || isUnique.values[1] || isUnique.values[2]">Save</button>
+          <button type="button" class="btn btn-danger pull-right" (click)="back()">Cancel</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="addressinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Address Create/Edit</h5>
+        <button type="button" class="close" (click)="back()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="address_creation" (ngSubmit)="saveAddress(); ">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-md-6 col ">
+              <label for="companyid" class="form-label">Address</label>
+              <input type="text " formControlName="address" class="form-control form-input " id="companyid" (change)="verifyCode(code.value,0)"
+                #code required>
+              <app-error-messages [control]="address_creation.controls[ 'address']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-6 col">
+              <label for="companyname" class="form-label">City</label>
+              <input type="text " formControlName="city" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="address_creation.controls[ 'city']"></app-error-messages>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6 col">
+              <label for="businesscategory" class="form-label">State</label>
+              <input type="text " formControlName="state" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="address_creation.controls[ 'state']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-6 col">
+              <label for="businessactivity" class="form-label">Pin Code</label>
+              <input type="text " formControlName="pincode" class="form-control form-input " id="businessactivity" required>
+              <app-error-messages [control]="address_creation.controls[ 'pincode']"></app-error-messages>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="address_creation.invalid">Save</button>
+          <button type="button" class="btn btn-danger pull-right" (click)="back()">Cancel</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="contactinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Contact Create/Edit</h5>
+        <button type="button" class="close" (click)="back()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="contact_creation" (ngSubmit)="saveContact(); ">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-md-6 col ">
+              <label for="companyid" class="form-label">Contact Name</label>
+              <input type="text " formControlName="contactName" class="form-control form-input " id="companyid" (change)="verifyCode(code.value,0)"
+                #code required>
+              <app-error-messages [control]="contact_creation.controls[ 'contactName']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-6 col">
+              <label for="companyname" class="form-label">Email</label>
+              <input type="text " formControlName="email" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="contact_creation.controls[ 'email']"></app-error-messages>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6 col">
+              <label for="businesscategory" class="form-label">Designation</label>
+              <input type="text " formControlName="designation" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="contact_creation.controls[ 'designation']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-6 col">
+              <label for="businessactivity" class="form-label">Mobile</label>
+              <input type="text " formControlName="mobile" class="form-control form-input " id="businessactivity" required>
+              <app-error-messages [control]="contact_creation.controls[ 'mobile']"></app-error-messages>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6 col">
+              <label for="businesscategory" class="form-label">Phone</label>
+              <input type="text " formControlName="phone" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="contact_creation.controls[ 'phone']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-6 col">
+              <label for="businessactivity" class="form-label">Fax</label>
+              <input type="text " formControlName="fax" class="form-control form-input " id="businessactivity" required>
+              <app-error-messages [control]="contact_creation.controls[ 'fax']"></app-error-messages>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="contact_creation.invalid">Save</button>
+          <button type="button" class="btn btn-danger pull-right" (click)="back()">Cancel</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="projectinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Project Create/Edit</h5>
+        <button type="button" class="close" (click)="back()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="project_creation" (ngSubmit)="saveProject(); ">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-md-6 col ">
+              <label for="companyid" class="form-label">Project Code</label>
+              <select formControlName="projId" class="form-control form-input ">
+                <option *ngFor="let pro of projects" [value]="pro.projId">{{pro.projName}}</option>
+              </select>
+              <app-error-messages [control]="project_creation.controls[ 'projId']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-6 col">
+              <label for="companyname" class="form-label">Contract Value</label>
+              <input type="text " formControlName="contractValue" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="project_creation.controls[ 'contractValue']"></app-error-messages>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6 col">
+              <label for="businesscategory" class="form-label">Start Date</label>
+              <div class="row" style="padding:5px;">
+                <input class=" col-md-8 colform-control" style="float:none" placeholder="Select a date" (click)="dp.toggleCalendar()" ngx-mydatepicker
+                  name="myDate" formControlName="startDate" [options]="myOptions" #dp="ngx-mydatepicker" />
+                <span class="col0-md-4 col " style="padding: 0px;">
+                  <button style="border-radius: 2px;width:auto;min-width:0" type="button" class="btn btn-default" (click)="dp.clearDate()">
+                    <i class="fa fa-times "></i>
+                  </button>
+                  <button style="border-radius: 2px;width:auto;min-width:0" type="button" class="btn btn-default" (click)="dp.toggleCalendar()">
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+              </div>
+              <app-error-messages [control]="project_creation.controls[ 'startDate']"></app-error-messages>
+            </div>
+            <div class="form-group col-md-6 col">
+              <label for="businessactivity" class="form-label">Finish Date</label>
+              <div class="row" style="padding:5px;">
+                <input class=" col-md-8 colform-control" style="float:none" placeholder="Select a date" (click)="sd.toggleCalendar()" ngx-mydatepicker
+                  name="myDate" formControlName="finishDate" [options]="myOptions" #sd="ngx-mydatepicker" />
+                <span class="col0-md-4 col " style="padding: 0px;">
+                  <button style="border-radius: 2px;width:auto;min-width:0" type="button" class="btn btn-default" (click)="sd.clearDate()">
+                    <i class="fa fa-times "></i>
+                  </button>
+                  <button style="border-radius: 2px;width:auto;min-width:0" type="button" class="btn btn-default" (click)="sd.toggleCalendar()">
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+              </div>
+              <app-error-messages [control]="project_creation.controls[ 'finishDate']"></app-error-messages>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6 col ">
+              <label for="companyid" class="form-label">Performance</label>
+              <input type="text " formControlName="performance" class="form-control form-input " id="companyname" required>
+              <app-error-messages [control]="project_creation.controls[ 'performance']"></app-error-messages>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="project_creation.invalid">Save</button>
+          <button type="button" class="btn btn-danger pull-right" (click)="back()">Cancel</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

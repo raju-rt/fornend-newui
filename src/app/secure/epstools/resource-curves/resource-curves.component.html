@@ -1,0 +1,259 @@
+<section id="layout_header">
+  <h2 class="ttl2">Resource Curves</h2>
+  <table class="table-striped tbl_head table  mb-0">
+    <colgroup>
+      <col style="width:5%;" />
+      <col style="width:15%;" />
+      <col style="width:10%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+      <col style="width:7%;" />
+
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2">Select</th>
+        <th rowspan="2">ResourceCurve Name</th>
+        <th rowspan="2">Curve Category</th>
+        <th colspan="10">Curve Value Percentage</th>
+      </tr>
+      <tr>
+        <th>10-20</th>
+        <th>20-30</th>
+        <th>30-40</th>
+        <th>40-50</th>
+        <th>50-60</th>
+        <th>60-70</th>
+        <th>70-80</th>
+        <th>80-90</th>
+        <th>90-100</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+  </table>
+</section>
+<section id="main_content">
+  <div class="slimScroll">
+    <div class="table-responsive text-center">
+      <table class="table-striped tbl_body table  mb-0">
+        <colgroup>
+          <col style="width:5%;" />
+          <col style="width:15%;" />
+          <col style="width:10%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+          <col style="width:7%;" />
+        </colgroup>
+        <tbody>
+          <tr *ngFor="let rescrve of List | paginate: { itemsPerPage: records, currentPage: p }" (click)="getChart(rescrve)">
+            <td>
+              <div class="cust-check" (click)="selectedRecords(rescrve,$event)">
+                <input type="checkbox" [checked]="rescrve.checked==true" />
+                <label></label>
+              </div>
+            </td>
+            <td>{{ rescrve.curveType }}</td>
+            <td>{{ rescrve.catg }}</td>
+            <td>{{ rescrve.range1 }}</td>
+            <td>{{ rescrve.range2 }}</td>
+            <td>{{ rescrve.range3 }}</td>
+            <td>{{ rescrve.range4 }}</td>
+            <td>{{ rescrve.range5 }}</td>
+            <td>{{ rescrve.range6 }}</td>
+            <td>{{ rescrve.range7 }}</td>
+            <td>{{ rescrve.range8 }}</td>
+            <td>{{ rescrve.range9 }}</td>
+            <td>{{ rescrve.range10 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<section id="layout_footer" class="tbl_footer btns text-right">
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col col-sm-9 text-right">
+      <div class="row">
+        <pagination-controls class="col col-sm-6 text-left" (pageChange)="p = $event"></pagination-controls>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="edit()">Edit</button>
+          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#crese">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <canvas id="combochart" #charts></canvas>
+</section>
+<div class="modal fade" id="crese" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create/Edit Resource Curves</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="resourceCreation" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="tenantDetails1">
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Resource Curve Name</label>
+                <input type="text " formControlName="curveType" class="form-control form-input " (change)="verifyCode(code.value)" #code
+                  id="companyid" required>
+                <app-error-messages [control]="resourceCreation.controls[ 'curveType']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="companyname" class="form-label">Category</label>
+                <input type="text " formControlName="catg" class="form-control form-input " id="companyname" required>
+                <app-error-messages [control]="resourceCreation.controls[ 'catg']"></app-error-messages>
+              </div>
+            </div>
+            <div class="row no-gutters">
+              <div class="col col-8 ml-auto mr-auto">
+                <table class="table table-stripped th-td table-bordered no-shadow">
+                  <caption>Curve Value Percentage</caption>
+                  <colgroup>
+                    <col style="width:15%" />
+                    <col style="width:30%" />
+                    <col style="width:15%" />
+                    <col style="width:30%" />
+                  </colgroup>
+
+                  <tr>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range1" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range1']"></app-error-messages>
+                    </td>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range2" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range2']"></app-error-messages>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range3" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range3']"></app-error-messages>
+                    </td>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range4" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range4']"></app-error-messages>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range5" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range5']"></app-error-messages>
+                    </td>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range6" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range6']"></app-error-messages>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range7" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range7']"></app-error-messages>
+                    </td>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range8" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range8']"></app-error-messages>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range9" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range9']"></app-error-messages>
+                    </td>
+                    <th>
+                      <label>0-10</label>
+                    </th>
+                    <td>
+                      <input type="text " formControlName="range10" class="form-control form-input " id="companyname" (keyup)="OnResourceChange()">
+                      <app-error-messages [control]="resourceCreation.controls[ 'range10']"></app-error-messages>
+                    </td>
+                  </tr>
+                  <!-- foter -->
+                  <tr>
+                    <th colspan="3">
+                      <label>Total
+                        <small>(%)</small>
+                      </label>
+                    </th>
+                    <td>
+                      <input type="text " readonly formControlName="total" class="form-control form-input " id="companyname">
+                      <app-error-messages [control]="resourceCreation.controls[ 'total']"></app-error-messages>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="resourceCreation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

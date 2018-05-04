@@ -1,0 +1,164 @@
+<!-- <div class="calender">
+  <div class="calender_head">
+    <b>Standard Working Days</b>
+    <ul>
+      <li *ngFor="let week of weekList">
+        <div>{{week}}</div>
+      </li>
+    </ul>
+  </div>
+  <div class="calender_data">
+    <b>Calender Days</b>
+    <div class="cal_nav text-center">
+      <span class="fa fa-angle-left" (click)="switchDate(-1)"></span>
+      <span>{{getDateString(date)['month']}}-{{getDateString(date)['year']}} </span>
+      <span class="fa fa-angle-right" (click)="switchDate(1)"></span>
+    </div>
+    <div class="cal_days">
+      <div class="row no-gutters">
+        <div class="cal_th col text-center" *ngFor="let week of weekList">
+          <span>{{week}}</span>
+        </div>
+      </div>
+      <div class="row no-gutters">
+        <div class="cal_td col" *ngFor="let week of weekList">
+          <div *ngFor="let days of dateList[week];let i=index;" (click)="selectDate(days)">
+            <span *ngIf="days && days.dateNum" [class.active]="isSelected(days.dateNum)">{{days?days.getDate():''}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<section id="layout_header">
+    <div class="row">
+      <div class="col col-sm-4">
+        <h2 class="ttl2">Calenders</h2>
+      </div>
+    </div>
+    <table class="table tbl_head">
+        <colgroup>
+          <col style="width:10%;" />
+          <col style="width:15%;" />
+          <col style="width:45%;" />
+          <col style="width:30%;" />
+        </colgroup>
+        <thead>
+            <tr>
+              <th>Select</th>
+              <th>Calender ID</th>
+              <th>Calender Name</th>
+              <th>Default</th>
+            </tr>
+          </thead>
+    </table>
+  </section>
+  
+<section id="main_content">
+    <div class="slimScroll">
+        <div class="table-responsive text-center">
+          <table class="table-striped table tbl_body">
+              <colgroup>
+                <col style="width:10%;" />
+                <col style="width:15%;" />
+                <col style="width:45%;" />
+                <col style="width:30%;" />
+              </colgroup>
+              <tbody>
+                  <tr *ngFor="let cal of List| paginate: {id:'cacview', itemsPerPage: records, currentPage: p } | filterPipe: (mCode) ? mCode:((mName)?mName :mStatus) : (mCode) ? 'measurement_code': ((mName)?'measurement_name' :'status'
+                  ) ;let i=index;" (click)="viewRecord(cal)">
+                    <td>
+                      <div class="cust-check" (click)="selectedRecords(cal,$event)">
+                        <input type="checkbox" [checked]="cal.checked==true" />
+                        <label></label>
+                      </div>
+            
+                    </td>
+                    <td>{{cal.code}}</td>
+                    <td>{{cal.name}}</td>
+                    <td>
+                      <input type="checkbox" [checked]="cal.calDefaultValue" disabled="true" />
+                    </td>
+                  </tr>
+            
+                </tbody>
+    
+          </table>
+        </div>
+      </div>
+</section>
+<div class="tbl_footer btns" id="layout_footer">
+    <div class="row pagination_block">
+        <div class="col col-3">
+          <label>Total No OF Records :</label>
+          <select [(ngModel)]="records">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <div class="col col-3 pl-0 pr-0">
+            <pagination-controls id="cacview" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+          </div>
+          <div class="col text-right">
+            <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1">Edit</button>
+            <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="getCalender()">View</button>
+            <button type="button" class="btn btn-danger">Deactivate</button>
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#cccreate">Create</button>
+          </div>
+      </div> 
+</div>  
+<!-- asset classification -->
+
+
+
+
+
+
+
+
+
+<!-- <div class="modal fade" id="cccreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="cc_creation" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="tenantDetails">
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Cost Code ID</label>
+                <input type="text " formControlName="code" class="form-control form-input " (change)="verifyCode(code.value)" #code id="companyid"
+                  required>
+                <app-error-messages [control]="cc_creation.controls[ 'code']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="companyname" class="form-label">Cost Code Name</label>
+                <input type="text " formControlName="name" class="form-control form-input " id="companyname" required>
+                <app-error-messages [control]="cc_creation.controls[ 'name']"></app-error-messages>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="cc_creation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->

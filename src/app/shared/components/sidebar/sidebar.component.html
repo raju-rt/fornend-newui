@@ -1,0 +1,42 @@
+<nav>
+  <ul (scroll)="onScroll($event)">
+    <li *ngFor='let item of menuItems'>
+      <header>
+        <a href="javascript:void(0)" [routerLink]="item?.link">
+          <i class="fa {{item.icon}}"></i> {{item.text}}</a>
+        <span class="arrow">
+          <i *ngIf="item.level1" class="fa fa-angle-right" aria-hidden="true"></i>
+        </span>
+      </header>
+      <!-- level1 -->
+      <div class="menu_scroll">
+        <ul *ngIf="item.level1" class="subnav">
+          <li *ngFor='let subitem of item.level1'>
+            <header>
+              <a href="javascript:void(0)" *ngIf="subitem.click" (click)="logout()">
+                <i class="fa {{subitem.icon}}"></i>{{subitem.text}}</a>
+              <a href="javascript:void(0)" *ngIf="!subitem.click" [routerLink]="subitem.link">
+                <i class="fa {{subitem.icon}}"></i>{{subitem.text}}</a>
+              <span class="arrow">
+                <i *ngIf="subitem.level2" class="fa fa-angle-right" aria-hidden="true"></i>
+              </span>
+            </header>
+            <!-- level2 -->
+            <div class="menu_scroll">
+              <ul *ngIf="subitem.level2" class="subnav subnav2">
+                <li *ngFor='let subitem2 of subitem.level2'>
+                  <header>
+                    <a href="javascript:void(0)" [routerLink]="subitem2.link">
+                      <i class="fa {{subitem2.icon}"></i> {{subitem2.text}}</a>
+                  </header>
+                </li>
+              </ul>
+            </div>
+            <!--// level2 -->
+          </li>
+        </ul>
+      </div>
+      <!-- // level1 -->
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,45 @@
+<!-- <div class="tenant">
+  <h2 class="ttl2 text-center">New Mesasuring Unit</h2>
+  <form class="form_block" non-validate [formGroup]="measures_creation" (ngSubmit)="saveMeasure(); ">
+    <div class="row">
+      <div class="form-group col-md-6 col ">
+        <label for="companyid" class="form-label">Code</label>
+        <input type="text " formControlName="measurement_code" (change)="verifyCode(code.value)" #code class="form-control form-input "
+          id="companyid" required>
+        <app-error-messages [control]="measures_creation.controls[ 'measurement_code']"></app-error-messages>
+
+      </div>
+      <div class="form-group col-md-6 col">
+        <label for="companyname" class="form-label">Measurement Name</label>
+        <input type="text " formControlName="measurement_name" class="form-control form-input " id="companyname" required>
+        <app-error-messages [control]="measures_creation.controls[ 'measurement_name']"></app-error-messages>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6 col">
+        <label for="businesscategory" class="form-label">Classification</label>
+        <select class="form-control" id="businesscategory" formControlName="classification">
+          <option value="">Business Category</option>
+          <option *ngFor="let category of CategoryList" [value]="category.id">{{category.name}}</option>
+        </select>
+        <app-error-messages [control]="measures_creation.controls[ 'classification']"></app-error-messages>
+      </div>
+      <!<div class="form-group col-md-6 col">
+        <label for="companycategory" class="form-label">Company Category</label>
+        
+        <app-error-messages [control]="measures_creation.controls[ 'company_category']"></app-error-messages>
+
+      </div> -->
+<!-- </div>
+    <div class="row   align-center">
+      <div class="col-md-5 col"></div>
+      <div class="col-md-2 col">
+        <button type="submit" class="btn btn-primary" [disabled]="measures_creation.invalid">Save</button>
+      </div>
+      <div class="col-md-5 col"></div>
+    </div>
+
+
+  </form>
+</div> -->

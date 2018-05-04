@@ -1,0 +1,116 @@
+/* aside#sidebar {
+    
+    position: relative;
+    transition: width 0.5s;
+    width: 300px;
+    height: 100%;
+
+    .menuIcon {
+        width: 30px;
+        display: inline-block;
+        margin-left: 50px;
+        margin-top: 18px;
+        cursor: pointer;
+        position: absolute;
+        right: -45px;
+        top: 0;
+    
+        span {
+            height: 3px;
+            width: 100%;
+            background-color: #00526d;
+            display: block;
+            margin-bottom: 4px;
+        }
+    }
+
+    nav {
+        background-color: #003a4d;
+        white-space: nowrap;
+        transition: width 0.5s;
+        height: 100%;
+        width: 300px;
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+
+            li {
+                background-color: #00526d;
+                border-bottom: 1px solid #1f3d53;
+                padding: 15px;
+                border-top: 1px solid #30577b;
+                transition: background 0.3s;
+                position: relative;
+
+                a {
+                    color: #b4b4b4;
+
+                    i {
+                        margin-right: 15px;
+                        transition: font 0.2s;
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+                &:hover {
+                    background-color: #013e52;
+                }
+                span.arrow {
+                    color: #b4b4b4;
+                    float: right;
+                    font-size: 20px;
+                    position: relative;
+                    top: -3px;
+                    opacity: 0.6;
+                }
+
+                ul.subnav {
+                    display: none;
+                    position: absolute;
+                    left: 300px;
+                    min-width: 300px;
+                    top: 0;
+                    z-index: 2;
+                }
+
+                &:hover ul.subnav {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+aside#sidebar.active {
+    width: 52px;
+    nav {
+        width: 52px;
+        //overflow: hidden;
+        white-space: nowrap;
+        transition: width 0.5s;
+
+        ul {
+            li {
+                
+                span.arrow {
+                    display: none;
+                }
+                
+                i {
+                    font-size: 25px;
+                }
+                ul.subnav {
+                    left:52px;
+                }
+            }
+        }
+
+    }
+}
+aside#sidebar.active nav > ul > li > header a {
+    font-size:0;
+}
+ */

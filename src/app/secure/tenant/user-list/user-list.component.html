@@ -1,0 +1,339 @@
+<section id="layout_header">
+  <div class="row">
+    <div class="col col-sm-4">
+      <h2 class="ttl2">User List</h2>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.userName' type="text" required placeholder="User Name">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.empCode' type="text" required placeholder="Employee Code">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <select class="form-control cust-input" [(ngModel)]='request.status'>
+          <option value="1">Active</option>
+          <option value="0">InActive</option>
+        </select>
+      </div>
+    </div>
+    <div class="col search_btn text-right col-2">
+      <button>
+        <i class="fa fa-search" (click)="getUsers()"></i>
+      </button>
+      <button>
+        <i class="fa fa-refresh" (click)="reset();"></i>
+      </button>
+    </div>
+  </div>
+
+  <table class="table tbl_head">
+    <colgroup>
+      <col style="width:5%;" />
+      <col style="width:10%;" />
+      <col style="width:8%;" />
+      <col style="width:12%;" />
+      <col style="width:8%;" />
+      <col style="width:8%;" />
+      <col style="width:8%;" />
+      <col style="width:8%;" />
+      <col style="width:8%;" />
+      <col style="width:8%;" />
+      <col style="width:8%;" />
+      <col style="width:10%;" />
+
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>User Name</th>
+        <th>Employee Code</th>
+        <th>Employee Designation</th>
+        <th>Display Name</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Mobile</th>
+        <th>Profile Name</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+
+  </table>
+</section>
+
+
+<section id="main_content">
+  <div class="slimScroll ss_sm">
+    <div class="table-responsive text-center">
+      <table class="table-striped table tbl_body">
+        <colgroup>
+          <col style="width:5%;" />
+          <col style="width:10%;" />
+          <col style="width:8%;" />
+          <col style="width:12%;" />
+          <col style="width:8%;" />
+          <col style="width:8%;" />
+          <col style="width:8%;" />
+          <col style="width:8%;" />
+          <col style="width:8%;" />
+          <col style="width:8%;" />
+          <col style="width:8%;" />
+          <col style="width:10%;" />
+        </colgroup>
+        <tbody>
+          <tr *ngFor="let coc of List | paginate: {id:'leavetype', itemsPerPage: records, currentPage: p };let i=index;" (click)="viewRecord(coc.userId)">
+            <td>
+              <div class="cust-check" (click)="selectedRecords(coc,$event)">
+                <input type="checkbox" [checked]="coc.checked==true" />
+                <label></label>
+              </div>
+
+            </td>
+            <td>{{coc.userName}}</td>
+            <td>{{coc.empCode}}</td>
+            <td>{{coc.empDesg}}</td>
+            <td>{{coc.dispName}}</td>
+            <td>{{coc.firstName}}</td>
+            <td>{{coc.lastName}}</td>
+            <td>{{coc.email}}</td>
+            <td>{{coc.phone}}</td>
+            <td>{{coc.mobile}}</td>
+            <td>{{coc.roleDisplay}}</td>
+            <td>{{coc.remarks}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<div class="tbl_footer btns text-right" id="layout_footer">
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col col-sm-9 text-right" style="display: inline-block">
+      <div class="row">
+        <div class="col col-sm-6 text-right">
+          <pagination-controls id="leavetype" maxSize="3" (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="CreateNew('edit')">Edit</button>
+          <!-- <button type="button" class="btn btn-danger">Deactivate</button> -->
+          <button class="btn btn-primary pull-right" type="button" (click)="CreateNew()">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="layoutTwo">
+ <div class="slimScroll ss_sm">
+  <div class="listtab sideTab row">
+    <div class="col col-md-1 col-sm-2 pr-0 pl-0 sidebarBG">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true">Assign Projects</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col col-md-11 col-sm-10 pl-0 pr-0">
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="address" role="tabpanel" aria-labelledby="address-tab">
+          <div class="slim-scroll-parent text-center">
+            <table class="table-plan table">
+              <colgroup>
+                <col style="width:50%"/>
+                <col style="width:25%"/>
+                <col style="width:25%"/>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>EPS Name</th>
+                  <th>Project Name</th>
+                  <th>Project Access</th>
+                </tr>
+              </thead>
+            </table>
+            <div class="slim-scroll ss_sm">
+              <table class="table-plan table">
+                  <colgroup>
+                    <col style="width:50%"/>
+                    <col style="width:25%"/>
+                    <col style="width:25%"/>
+                  </colgroup>
+                <tbody> 
+                  <tr *ngFor="let projects of assignProject ">
+                    <td>{{projects.parentName}}</td>
+                    <td>{{projects.projName}}</td>
+                    <td>
+                      <div class="cust-check">
+                        <input type="checkbox" [(ngModel)]="projects.usrProj" />
+                        <label></label>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <table class="table">
+              <tfoot style="background-color:#ffffff;">
+                <tr>
+                  <td colspan="9" align="right">
+                    <button type="button" class="btn btn-primary" (click)="saveProject()">save</button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+ </div>
+</section>
+
+<div class="modal fade" id="tanantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Leave Type Classification</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="UserList_creation" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="tenantDetails">
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="userName" class="form-label">User Name</label>
+                <input type="text " formControlName="userName" class="form-control form-input " #code id="userName" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'userName']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" formControlName="password" class="form-control form-input " id="password" required>
+                <app-error-messages [control]="UserList_creation.controls['password']"></app-error-messages>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-6 col">
+                <label for="empCode" class="form-label">Employee Code</label>
+                <select class="form-control" id="empCode" formControlName="empCode" (change)="autoFillDataFn(UserList_creation.controls[ 'empCode'].value.displayNamesMap)">
+                  <option value="" disabled>--Select--</option>
+                  <option *ngFor="let code of empCodes ||[]" [ngValue]="code">{{code.code}}</option>
+                </select>
+                <app-error-messages [control]="UserList_creation.controls[ 'empCode']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-6 col ">
+                <label for="empDesg" class="form-label">Employee Designation</label>
+                <input type="text " formControlName="empDesg" class="form-control form-input " #code id="empDesg" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'empDesg']"></app-error-messages>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="row">
+              <div class="form-group col-md-6 col">
+                <label for="dispName" class="form-label">Display Name</label>
+                <input type="text " formControlName="dispName" class="form-control form-input " id="dispName" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'dispName']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-6 col ">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text " formControlName="firstName" class="form-control form-input " #code id="firstName" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'firstName']"></app-error-messages>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="row">
+              <div class="form-group col-md-6 col">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text " formControlName="lastName" class="form-control form-input " id="lastName" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'lastName']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-6 col ">
+                <label for="email" class="form-label">Email</label>
+                <input type="email " formControlName="email" class="form-control form-input " #code id="email" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'email']"></app-error-messages>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="row">
+              <div class="form-group col-md-6 col">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text " formControlName="phone" class="form-control form-input " id="phone" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'phone']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-6 col ">
+                <label for="mobile" class="form-label">Mobile</label>
+                <input type="text " formControlName="mobile" class="form-control form-input " #code id="mobile" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'mobile']"></app-error-messages>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="row">
+              <div class="form-group col-md-6 col">
+                <label for="roleDisplay" class="form-label">Profile Name</label>
+
+                <select class="form-control" id="roleDisplay" formControlName="roleDisplay">
+                  <option value="">--Select--</option>
+                  <option *ngFor="let role of roles||[]" [ngValue]="role">{{role.roleName}}</option>
+                </select>
+
+
+                <app-error-messages [control]="UserList_creation.controls[ 'roleDisplay']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-6 col ">
+                <label for="remarks" class="form-label">Remarks</label>
+                <textarea formControlName="remarks" class="form-control form-input " #code id="remarks" required> </textarea>
+                <app-error-messages [control]="UserList_creation.controls[ 'remarks']"></app-error-messages>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="UserList_creation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

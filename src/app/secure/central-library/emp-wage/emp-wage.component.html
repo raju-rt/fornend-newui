@@ -1,0 +1,230 @@
+<section id="layout_header">
+
+  <div class="row">
+    <div class="col col-sm-4">
+      <h2 class="ttl2">Employee Wage Rate Factor</h2>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.empWageCode' type="text" required placeholder="Search for empwage classification code">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.empWageName' type="text" required placeholder="Search for empwage classification name">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <select class="form-control cust-input" [(ngModel)]='request.status'>
+          <option value="">meassurement status</option>
+          <option value="1">Active</option>
+          <option value="0">InActive</option>
+        </select>
+      </div>
+    </div>
+    <div class="col search_btn text-right col-2">
+      <button>
+        <i class="fa fa-search" (click)="getEWRFlassification()"></i>
+      </button>
+      <button>
+        <i class="fa fa-refresh" (click)="reset();"></i>
+      </button>
+    </div>
+  </div>
+
+  <table class="table tbl_head">
+    <colgroup>
+      <col style="width:10%;" />
+      <col style="width:20%;" />
+      <col style="width:30%;" />
+      <col style="width:20%;" />
+      <col style="width:20%;" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Wage Factor Code</th>
+        <th>Wage Factor Name</th>
+        <th>Wage Factor</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+  </table>
+</section>
+<!-- fixed header layout -->
+
+<!-- fixed content layout -->
+<section id="main_content">
+  <div class="slimScroll">
+    <div class="table-responsive text-center">
+      <table class="table-striped table tbl_body">
+        <colgroup>
+          <col style="width:10%;" />
+          <col style="width:20%;" />
+          <col style="width:30%;" />
+          <col style="width:20%;" />
+          <col style="width:20%;" />
+        </colgroup>
+        <tbody>
+          <tr *ngFor="let coc of List | paginate: {id:'empwage', itemsPerPage: records, currentPage: p } | filterPipe: (mCode) ? mCode:((mName)?mName :mStatus) : (mCode) ? 
+                      'measurement_code': ((mName)?'measurement_name' :'status'
+                      );let i=index;" (click)="viewRecord(coc)">
+            <td>
+              <div class="cust-check" (click)="selectedRecords(coc,$event)">
+                <input type="checkbox" [checked]="coc.checked==true" />
+                <label></label>
+              </div>
+
+            </td>
+            <td>{{coc.code}}</td>
+            <td>{{coc.name}}</td>
+            <td>{{coc.wageFactor}}</td>
+            <td>{{coc.status}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- fixed content layout -->
+
+<!-- fixed footer layout -->
+<div class="tbl_footer btns text-right" id="layout_footer">
+
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col col-sm-9 text-right" style="display: inline-block">
+      <div class="row">
+        <div class="col col-sm-6 text-right">
+          <pagination-controls id="empwage" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="edit()">Edit</button>
+          <button type="button" class="btn btn-danger">Deactivate</button>
+          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#emp-wages-create">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="tanantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tenant details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="tenantDetails!==undefined">
+        <div class="emp-wage">
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="emp-wages-create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Employee Wage Create</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="emp_wages_creation" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="tenantDetails">
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="id" class="form-label">Wage FactorCode</label>
+                <input type="text " formControlName="code" class="form-control form-input " (change)="verifyCode(code.value)" #code id="id"
+                  required>
+                <app-error-messages [control]="emp_wages_creation.controls[ 'code']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="name" class="form-label">Cost Code Name</label>
+                <input type="text " formControlName="name" class="form-control form-input " id="name" required>
+                <app-error-messages [control]="emp_wages_creation.controls[ 'name']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col">
+                <label for="factor" class="form-label">Wage Factor</label>
+                <input type="text" formControlName="factor" class="form-control form-input " id="factor" required>
+                <app-error-messages [control]="emp_wages_creation.controls[ 'factor']"></app-error-messages>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="emp_wages_creation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

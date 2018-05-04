@@ -1,0 +1,44 @@
+<section class="login-bg">
+  <div class="form-block">
+    <a href="" class="logo">
+      <img src="../../../assets/images/logo.png"> </a>
+
+    <div class="form-box">
+      <h2>Login</h2>
+      <form non-validate [formGroup]="loginForm" (ngSubmit)="login();">
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon" id="username">
+              <i class="fa fa-user-o" aria-hidden="true"></i>
+            </span>
+            <input type="text" formControlName="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="username">
+          </div>
+          <app-error-messages [control]="loginForm.controls['username']"></app-error-messages>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon" id="password">
+              <i class="fa fa-key" aria-hidden="true"></i>
+            </span>
+            <input type="password" formControlName="password" class="form-control" placeholder="password" aria-label="password" aria-describedby="password">
+          </div>
+          <app-error-messages [control]="loginForm.controls['password']"></app-error-messages>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon" id="companycode">
+              <i class="fa fa-key" aria-hidden="true"></i>
+            </span>
+            <input type="text" formControlName="clientcode" class="form-control" placeholder="CompanyName" aria-label="companycode" aria-describedby="companycode">
+          </div>
+          <app-error-messages [control]="loginForm.controls['clientcode']"></app-error-messages>
+        </div>
+        <div class="form-grop">
+          <input class="btn btn-primary btn-block" type="submit" value="Login" [disabled]="loginForm.invalid">
+        </div>
+
+        <a href="" class="link text-right">Forgot Password?</a>
+      </form>
+    </div>
+  </div>
+</section>

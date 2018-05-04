@@ -1,0 +1,89 @@
+<div class="tenant">
+  <h2 class="ttl2 text-center">Tenant On Boarding</h2>
+
+  <form class="formSteps row" non-validate [formGroup]="client_registration_form" (ngSubmit)="saveTenent(); ">
+    <div class="col-md-4 block active col " formGroupName="tenant_details">
+      <h3 class="ttl3 ">Tenant Details</h3>
+      <div class="form-group ">
+        <label for="tenetcode " class="form-label ">Tenant Code</label>
+        <input type="text " formControlName="tenant_code" class="form-control form-input " id="tenetcode" required>
+        <app-error-messages [control]="client_registration_form.controls.tenant_details.controls[ 'tenant_code'] "></app-error-messages>
+      </div>
+      <div class="form-group ">
+        <label for="tenetcode " class="form-label ">Tenant Name</label>
+        <input type="text " formControlName="tenant_name" class="form-control form-input " required>
+        <app-error-messages [control]="client_registration_form.controls.tenant_details.controls[ 'tenant_name'] "></app-error-messages>
+
+      </div>
+      <div class="form-group ">
+        <label for="tenetcode " class="form-label ">Nature of Bussiness</label>
+        <input type="text " formControlName="nature_of_business" class="form-control form-input " required>
+        <app-error-messages [control]="client_registration_form.controls.tenant_details.controls[ 'nature_of_business'] "></app-error-messages>
+
+      </div>
+      <div class="form-group ">
+        <label for="tenetcode " class="form-label ">Url</label>
+        <input type="url " formControlName="url" class="form-control form-input" required>
+        <app-error-messages [control]="client_registration_form.controls.tenant_details.controls[ 'url'] "></app-error-messages>
+
+      </div>
+      <div class="form-group ">
+        <label for="tenetcode " class="form-label ">Address</label>
+        <textarea class="form-control " formControlName="address"></textarea>
+        <app-error-messages [control]="client_registration_form.controls.tenant_details.controls[ 'address'] "></app-error-messages>
+
+      </div>
+      <div class="form-group ">
+        <label for="tenetcode " class="form-label ">Country</label>
+        <select class="form-control " formControlName="country">
+          <option value="">Choose Country </option>
+          <option value="one ">One </option>
+          <option value="two ">Two</option>
+          <option value="three ">Three</option>
+        </select>
+        <app-error-messages [control]="client_registration_form.controls.tenant_details.controls[ 'country'] "></app-error-messages>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-4 block col active" id="licencedet" formGroupName="licence_details">
+      <h3 class="ttl3 ">Licence Managmant</h3>
+      <div class="form-group ">
+        <label for="tenetcode " class="form-label ">No. Of Users</label>
+        <input type="text " class="form-control form-input " required formControlName="no_of_users">
+      </div>
+      <div class="form-group ">
+        <label class="form-label ">Start Date</label>
+        <input type="date" class="form-control form-input " required formControlName="start_date">
+      </div>
+      <div class="form-group ">
+        <label class="form-label ">End Date</label>
+        <input type="date" class="form-control form-input " required formControlName="end_date">
+      </div>
+
+    </div>
+
+    <div class="col-md-4 block col active" id="contactdet" formGroupName="contact_details">
+      <h3 class="ttl3 ">Contact Details</h3>
+      <div class="form-group ">
+        <label class="form-label ">Contact Person Name</label>
+        <input type="text " class="form-control form-input " required formControlName="contact_personname">
+      </div>
+      <div class="form-group ">
+        <label class="form-label ">Contact Number</label>
+        <input type="text " class="form-control form-input " required formControlName="contact_number">
+      </div>
+      <div class="form-group ">
+        <label class="form-label ">Email</label>
+        <input type="email " class="form-control form-input " required formControlName="email">
+      </div>
+      <div class="form-group ">
+        <label class="form-label ">Fax</label>
+        <input type="text " class="form-control form-input " required formControlName="fax">
+      </div>
+      <input type="button" class="btn btn-primary pull-right " (click)="enableForm()" [disabled]="isEdit" value="Edit">
+      <button type="submit " class="btn btn-primary pull-right " [disabled]="client_registration_form.invalid || !isEdit">Submit</button>
+    </div>
+  </form>
+</div>

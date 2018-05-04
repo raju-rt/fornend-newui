@@ -1,0 +1,162 @@
+<section id="layout_header">
+
+  <div class="row">
+    <div class="col col-sm-4">
+      <h2 class="ttl2">Weather Classification</h2>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.weatherCode' type="text" required placeholder="Search for weather classification code">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.weatherName' type="text" required placeholder="Search for weather classification name">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <select class="form-control cust-input" [(ngModel)]='request.status'>
+          <option value="">meassurement status</option>
+          <option value="1">Active</option>
+          <option value="0">InActive</option>
+        </select>
+      </div>
+    </div>
+    <div class="col search_btn text-right col-2">
+      <button>
+        <i class="fa fa-search" (click)="getWeatherClassification()"></i>
+      </button>
+      <button>
+        <i class="fa fa-refresh" (click)="reset();"></i>
+      </button>
+    </div>
+  </div>
+
+  <table class="table tbl_head">
+    <colgroup>
+      <col style="width:10%;" />
+      <col style="width:25%;" />
+      <col style="width:40%;" />
+      <col style="width:25%;" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Weather Classification Code</th>
+        <th>Weather Classification Name</th>
+        <!-- <th>Classification</th> -->
+        <th>Status</th>
+      </tr>
+    </thead>
+  </table>
+</section>
+<!-- fixed header layout -->
+
+<!-- fixed content layout -->
+<section id="main_content">
+  <div class="slimScroll">
+    <div class="table-responsive text-center">
+      <table class="table-striped table tbl_body">
+        <colgroup>
+          <col style="width:10%;" />
+          <col style="width:25%;" />
+          <col style="width:40%;" />
+          <col style="width:25%;" />
+        </colgroup>
+        <tbody>
+          <tr *ngFor="let weather of List | paginate: {id:'weather', itemsPerPage: records, currentPage: p };
+          let i=index;" (click)="viewRecord(weather)">
+            <td>
+              <div class="cust-check" (click)="selectedRecords(weather,$event)">
+                <input type="checkbox" [checked]="weather.checked==true" />
+                <label></label>
+              </div>
+
+            </td>
+            <td>{{weather.code}}</td>
+            <td>{{weather.name}}</td>
+            <!-- <td>{{measuring.classification}}</td> -->
+            <td>{{weather.status}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- fixed content layout -->
+
+
+<!-- fixed footer layout -->
+<section id="layout_footer" class="tbl_footer btns text-right">
+
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col col-sm-9 text-right" style="display: inline-block">
+      <div class="row">
+        <div class="col col-sm-6 text-right">
+          <pagination-controls id="weather" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="edit()">Edit</button>
+          <button type="button" class="btn btn-danger">Deactivate</button>
+
+          <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#weatherclasification">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="modal fade" id="weatherclasification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Weather Classification Create</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="weather_creation" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="wetherClass">
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Weather Classification Code</label>
+                <input type="text " formControlName="code" class="form-control form-input " id="companyid" required>
+                <app-error-messages [control]="weather_creation.controls[ 'code']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="companyname" class="form-label">Weather Classification Name</label>
+                <input type="text " formControlName="name" class="form-control form-input " id="companyname" required>
+                <app-error-messages [control]="weather_creation.controls[ 'name']"></app-error-messages>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="weather_creation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

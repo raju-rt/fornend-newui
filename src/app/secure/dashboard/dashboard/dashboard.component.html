@@ -1,0 +1,119 @@
+<section id="layout_header">
+  <h2 class="ttl2">Tenant Information</h2>
+<table class="table-striped tbl_head table  mb-0">
+<colgroup>
+  <col style="width:15%;"/>
+  <col style="width:35%;"/>
+  <col style="width:10%;"/>
+  <col style="width:20%;"/>
+  <col style="width:20%;"/>
+</colgroup>
+    <thead>
+      <tr>
+        <th>Tenant Code</th>
+        <th>Tenant Name</th>
+        <th>No. of Users</th>
+        <th>Created Date</th>
+        <th>Expiry Date</th>
+      </tr>
+    </thead>
+    
+</table>
+</section>
+<section id="main_content">
+  <div class="slimScroll">
+<div class="table-responsive text-center">
+  <table class="table-striped tbl_body table  mb-0">
+      <colgroup>
+        <col style="width:15%;"/>
+        <col style="width:35%;"/>
+        <col style="width:10%;"/>
+        <col style="width:20%;"/>
+        <col style="width:20%;"/>
+      </colgroup>
+    <tbody>
+      <tr [class.active_row]="clickedrecord=== tenant.userId" *ngFor="let tenant of tenantList | paginate: { itemsPerPage: records, currentPage: p }" (click)="viewTenant(tenant)">
+        <td>{{ tenant.clientId }}</td>
+        <td>{{ tenant.dispName }}</td>
+        <td>{{ tenant.no_of_users }}</td>
+        <td>{{ tenant.start_date }}</td>
+        <td>{{ tenant.end_date }}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</section>
+<section id="layout_footer" class="tbl_footer btns text-right">
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-6 text-left">
+        <label>Total No OF Records :</label>
+        <select [(ngModel)]="records">
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+          <option value="30">30</option>
+          <option value="35">35</option>
+          <option value="40">40</option>
+          <option value="45">45</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="col col-sm-6 text-right">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+</div>
+</section>
+
+
+<div class="modal fade" id="tanantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tenant details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="tenantDetails!==undefined">
+        <div class="tenantDetails">
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col">Tenant name :</label>
+            <div class="col-sm-6 col">
+              <!--  <input class="form-control" *ngIf="tenantEdit" type="text"> -->
+            </div>
+            <div class="col-sm-2 text-right col actions">
+              <span class="fa fa-pencil" (click)=" tenantEdit =! tenantEdit "></span>
+              <span class="fa fa-trash-o"></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

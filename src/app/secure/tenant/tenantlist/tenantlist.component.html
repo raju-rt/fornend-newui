@@ -1,0 +1,291 @@
+<section id="layout_header">
+  <div class="row">
+    <div class="col col-sm-4">
+      <h2 class="ttl2">Tenant Information</h2>
+    </div>
+  </div>
+
+  <table class="table tbl_head">
+    <colgroup>
+      <col style="width:10%;" />
+      <col style="width:20%;" />
+      <col style="width:10%;" />
+      <col style="width:10%;" />
+      <col style="width:15%;" />
+      <col style="width:15%;" />
+      <col style="width:10%;" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Tenant Code</th>
+        <th>Tenant Name</th>
+        <th>No. of Users</th>
+        <th>Email Id</th>
+        <th>WebSite URL</th>
+        <th>Expiry Date</th>
+      </tr>
+    </thead>
+
+  </table>
+</section>
+
+
+<section id="main_content">
+  <div class="slimScroll">
+    <div class="table-responsive text-center">
+      <table class="table-striped table tbl_body">
+        <colgroup>
+          <col style="width:10%;" />
+          <col style="width:20%;" />
+          <col style="width:10%;" />
+          <col style="width:10%;" />
+          <col style="width:15%;" />
+          <col style="width:15%;" />
+          <col style="width:10%;" />
+        </colgroup>
+        <tbody>
+          <tr *ngFor="let tenant of tenantList | paginate: { itemsPerPage: records, currentPage: p }">
+            <td>
+              <div class="cust-check" (click)="selectedRecords(tenant,$event)">
+                <input type="checkbox" [checked]="tenant.checked==true" />
+                <label></label>
+              </div>
+    
+            </td>
+            <td>{{ tenant.code }}</td>
+            <td>{{ tenant.name }}</td>
+            <td>{{ tenant.registeredUsers }}</td>
+            <td>{{ tenant.email }}</td>
+            <td>{{ tenant.webSiteURL }}</td>
+            <td>{{ tenant.licence }}</td>
+          </tr>
+    
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<div class="tbl_footer btns text-right" id="layout_footer">
+  <div class="row  pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+
+      
+    </div>
+    <div class="col col-sm-9 text-right" style="display: inline-block">
+      <div class="row">
+        <div class="col col-sm-6 text-right">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary" (click)="createTenant()">Create</button>
+          <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="edit()">Edit</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" id="tenantmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tenant Create/Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="tenantForm" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="tenantDetails">
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">First Name</label>
+                <input type="text " formControlName="firstName" class="form-control form-input " id="companyid">
+                <app-error-messages [control]="tenantForm.controls['firstName']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Last Name</label>
+                <input type="text " formControlName="lastName" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['lastName']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Display Name</label>
+                <input type="text " formControlName="dispName" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['dispName']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">User Name</label>
+                <input type="text " formControlName="userName" class="form-control form-input ">
+                <app-error-messages [control]="tenantForm.controls['userName']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Password</label>
+                <input type="password " formControlName="password" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['password']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label"> Tenant Code </label>
+                <input type="text " formControlName="code" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['code']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">Tenant Name</label>
+                <input type="text " formControlName="name" class="form-control form-input ">
+                <app-error-messages [control]="tenantForm.controls['name']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Business Type</label>
+                <input type="text " formControlName="businessType" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['businessType']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Email</label>
+                <input type="text " formControlName="email" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['email']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">Fax</label>
+                <input type="text " formControlName="fax" class="form-control form-input ">
+                <app-error-messages [control]="tenantForm.controls['fax']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Mobile</label>
+                <input type="text " formControlName="mobile" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['mobile']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Phone</label>
+                <input type="text " formControlName="phone" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['phone']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">Licence Expiry/Renewal Date</label>
+                <div class="row" style="padding:5px;">
+                  <input class=" col-md-8 colform-control" style="float:none" placeholder="Select a date" (click)="dp.toggleCalendar()" ngx-mydatepicker
+                    name="myDate" formControlName="licence" [options]="myOptions" #dp="ngx-mydatepicker" />
+                  <span class="col0-md-4 col " style="padding: 0px;">
+                    <button style="border-radius: 2px;width:auto;min-width:0" type="button" class="btn btn-default" (click)="dp.clearDate()">
+                      <i class="fa fa-times "></i>
+                    </button>
+                    <button style="border-radius: 2px;width:auto;min-width:0" type="button" class="btn btn-default" (click)="dp.toggleCalendar()">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </span>
+                </div>
+                <app-error-messages [control]="tenantForm.controls['licence']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">maxActiveUsers</label>
+                <input type="text " formControlName="maxActiveUsers" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls[ 'maxActiveUsers']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Max EPSLevel</label>
+                <input type="text " formControlName="maxEPSLevel" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['maxEPSLevel']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">Max Login Attempts</label>
+                <input type="text " formControlName="maxLoginAttempts" class="form-control form-input ">
+                <app-error-messages [control]="tenantForm.controls['maxLoginAttempts']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Mail Template</label>
+                <input type="text " formControlName="mailTemplate" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['mailTemplate']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Country</label>
+                <input type="text " formControlName="country" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['country']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">WebSite URL</label>
+                <input type="text " formControlName="webSiteURL" class="form-control form-input " #code id="companyid">
+                <app-error-messages [control]="tenantForm.controls['webSiteURL']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Credit Card Details</label>
+                <input type="text " formControlName="creditCardDetails" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['creditCardDetails']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Registered Users</label>
+                <input type="text " formControlName="registeredUsers" class="form-control form-input " id="companyname">
+                <app-error-messages [control]="tenantForm.controls['registeredUsers']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col ">
+                <label for="companyid" class="form-label">Contact Person</label>
+                <input type="text " formControlName="contactPerson" class="form-control form-input " #code id="companyid">
+                <app-error-messages [control]="tenantForm.controls['contactPerson']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Address</label>
+                <textarea type="text " formControlName="address" class="form-control form-input " id="companyname"></textarea>
+                <app-error-messages [control]="tenantForm.controls['address']"></app-error-messages>
+              </div>
+              <div class="form-group col-md-4 col">
+                <label for="companyname" class="form-label">Comments</label>
+                <textarea type="text " formControlName="remarks" class="form-control form-input " id="companyname"></textarea>
+                <app-error-messages [control]="tenantForm.controls['remarks']"></app-error-messages>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="tenantForm.invalid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

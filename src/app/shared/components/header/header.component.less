@@ -1,0 +1,63 @@
+header {
+    padding: 7px 0;
+    background-color: #fff;
+    position: fixed;
+    z-index: 9;
+    left: 0;
+    right: 0;
+    top: 0;
+    .logo img {
+        max-width: 130px;
+    }
+
+    
+    .search {
+        .input-group {
+            background-color: #ebebeb;
+            border-radius: 30px;
+            padding-left: 15px;
+            padding-right: 10px;
+            margin-top: 5px;
+
+            input {
+                background-color: transparent;
+                border: 0;
+                font-size: 14px;
+            }
+            .form-control:focus, .btn-secondary:focus {
+                border:none;
+                outline: 0;
+                box-shadow:none;
+            }
+            input::-webkit-input-placeholder {
+                opacity: 0.4;
+            }
+            input::-moz-placeholder {
+                opacity: 0.4;
+            }
+
+            .input-group-btn {
+                button {
+                    background-color: transparent;
+                    border: 0;
+                    color: #a8a9a9;
+                    font-size: 17px;
+                    cursor: pointer;
+                    min-width: initial;
+                }
+            }
+        }
+    }
+    .my-account {
+        .dropdown a {
+            color: #8f8f8f;
+            display: block;
+            margin-top: 14px;
+        }
+        .dropdown-menu._right0 {
+            left: auto !important;
+            right: 0 !important;
+            transform: translate3d(0px, 35px, 0px) !important;
+        }
+    }
+}

@@ -1,0 +1,201 @@
+<h2 class="ttl2 text-center">Central Material Classification</h2>
+
+<div class="row">
+  <div class="col col-sm-3 ml-auto">
+    <div class="form-group">
+      <input type="search" parentName="" class="form-control cust-input" value="" placeholder="Group ID/ Group parentName">
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <div class="tree_table">
+    <div class="tree_tbl_head row ml-0 mr-0">
+      <div class="col _th col-sm-1"> Select </div>
+      <div class="col _th col-sm-4"> Profit Center Code</div>
+      <div class="col _th col-sm-7"> Profit Center </div>
+    </div>
+    <ul class="tree">
+      <li class="parent" *ngFor="let profitc of List | paginate: {id:'financeprofit', itemsPerPage: records, currentPage: p } 
+      ;let i=index">
+        <header class="row" *ngIf="profitc.parentName!==null">
+          <div class="cust-check col col-sm-1">
+            <input type="checkbox">
+            <label></label>
+          </div>
+          <span class="col addicon col col-sm-4">
+            <i class="fa  icon "></i> {{profitc.code}}</span>
+          <span class="col col-sm-4"> {{profitc.parentName}}</span>
+          <span class="col col-sm-3"> </span>
+        </header>
+        <!-- level 1 -->
+        <ul *ngFor="let sub1 of profitc.childProfitCentreTOs">
+          <li *ngIf="sub1.childProfitCentreTOs.length>0">
+            <header class="row">
+              <div class="cust-check col col-sm-1">
+                <input type="checkbox">
+                <label></label>
+              </div>
+              <span class="col addicon col-sm-4">
+                <i class="fa icon "></i> {{sub1.code}}</span>
+              <span class="col col-sm-4">{{sub1.parentName}}</span>
+            </header>
+            <!-- level 2 -->
+
+            <ul *ngFor="let sub2 of sub1.childProfitCentreTOs">
+              <li *ngIf="sub2.childProfitCentreTOs.length>0">
+                <header class="row">
+                  <div class="cust-check col col-sm-1">
+                    <input type="checkbox">
+                    <label></label>
+                  </div>
+                  <span class="col addicon col-sm-4">
+                    <i class="fa icon "></i> {{sub2.code}}</span>
+                  <span class="col col-sm-4">{{sub2.parentName}}</span>
+                </header>
+                <!-- level 3 -->
+
+                <ul *ngFor="let sub3 of sub2.childProfitCentreTOs">
+                  <li *ngIf="sub3.childProfitCentreTOs.length>0">
+                    <header class="row">
+                      <div class="cust-check col col-sm-1">
+                        <input type="checkbox">
+                        <label></label>
+                      </div>
+                      <span class="col addicon col-sm-4">
+                        <i class="fa icon "></i> {{sub3.code}}</span>
+                      <span class="col col-sm-4">{{sub3.parentName}}</span>
+                    </header>
+                    <!-- level 4 -->
+
+                    <ul *ngFor="let sub4 of sub3.childProfitCentreTOs">
+                      <li>
+                        <header class="row">
+                          <div class="cust-check col col-sm-1">
+                            <input type="checkbox">
+                            <label></label>
+                          </div>
+                          <span class="col addicon col-sm-4">
+                            <i class="fa fa-circle"></i> {{sub4.code}}</span>
+                          <span class="col col-sm-4"> {{sub4.parentName}}</span>
+                        </header>
+                      </li>
+                    </ul>
+                  </li>
+                  <li *ngIf="sub3.childProfitCentreTOs.length===0">
+                    <header class="row">
+                      <div class="cust-check col col-sm-1">
+                        <input type="checkbox">
+                        <label></label>
+                      </div>
+                      <span class="col addicon col-sm-4">
+                        <i class="fa fa-circle"></i>{{sub3.code}}</span>
+                      <span class="col col-sm-4"> {{sub3.parentName}}</span>
+                    </header>
+                  </li>
+                </ul>
+              </li>
+              <li *ngIf="sub2.childProfitCentreTOs.length===0">
+                <header class="row">
+                  <div class="cust-check col col-sm-1">
+                    <input type="checkbox">
+                    <label></label>
+                  </div>
+                  <span class="col addicon col-sm-4">
+                    <i class="fa fa-circle"></i>{{sub2.code}}</span>
+                  <span class="col col-sm-4"> {{sub2.parentName}}</span>
+                </header>
+              </li>
+            </ul>
+          </li>
+          <li *ngIf="sub1.childProfitCentreTOs.length===0">
+            <header class="row">
+              <div class="cust-check col col-sm-1">
+                <input type="checkbox">
+                <label></label>
+              </div>
+              <span class="col addicon col-sm-4">
+                <i class="fa fa-circle"></i>{{sub1.code}}</span>
+              <span class="col col-sm-4"> {{sub1.parentName}}</span>
+            </header>
+          </li>
+
+        </ul>
+      </li>
+      <!-- end li -->
+    </ul>
+    <div class="row ml-0 mr-0 pagination_block">
+      <div class="col col-sm-3 text-left">
+        <label>Total No OF Records :</label>
+        <select [(ngModel)]="records">
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+          <option value="30">30</option>
+          <option value="35">35</option>
+          <option value="40">40</option>
+          <option value="45">45</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="col col-sm-9 text-right" style="display: inline-block">
+        <div class="row">
+          <div class="col col-sm-6 text-right">
+            <pagination-controls id="financeprofit" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+          </div>
+          <div class="col col-sm-6 text-right">
+            <button type="button" class="btn btn-primary">Edit</button>
+            <button type="button" class="btn btn-danger">Deactivate</button>
+            <button type="button" class="btn btn-success" (click)="tree_edit= !tree_edit">Create new</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="footor-actions text-right">
+      <button type="button" class="btn btn-primary">Edit</button>
+      <button type="button" class="btn btn-danger">Deactivate</button>
+      <button type="button" class="btn btn-success" (click)="tree_edit= !tree_edit">Create new</button>
+    </div> -->
+  </div>
+
+</div>
+<!-- profitc classification -->
+
+<!-- profitc classification edit -->
+<div class="table-responsive" *ngIf="tree_edit">
+  <div class="tree_table tree_edit">
+    <div class="tree_tbl_head row ml-0 mr-0">
+      <div class="col _th col-sm-6"> Material Group ID </div>
+      <div class="col _th col-sm-4"> Material Group Name </div>
+      <div class="col _th col-sm-2"> Unit of Measure </div>
+    </div>
+    <ul class="tree">
+      <li class="parent row ml-0 mr-0">
+        <div class="col col-sm-6">
+          <input class="form-control" type="text" placeholder="Material Group ID" />
+          <a href="Javascript:void(0)" class="addChild">
+            <i class="fa fa-user-plus" aria-hidden="true"></i>
+          </a>
+          <a href="Javascript:void(0)" class="addLeaf">
+            <i class="fa fa-envira" aria-hidden="true"></i>
+          </a>
+          <a href="Javascript:void(0)" class="delete">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="col col-sm-4">
+          <input class="form-control" type="text" placeholder="Material Group Name" />
+        </div>
+        <div class="col col-sm-2">
+
+        </div>
+      </li>
+      <!-- end li -->
+    </ul>
+    <div class="footor-actions text-right">
+      <button type="button" class="btn btn-success">Save</button>
+    </div>
+  </div>
+
+</div>

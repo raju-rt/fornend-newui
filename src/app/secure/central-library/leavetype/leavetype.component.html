@@ -1,0 +1,237 @@
+<section id="layout_header">
+
+  <div class="row">
+    <div class="col col-sm-4">
+      <h2 class="ttl2">Leave Types</h2>
+    </div>
+    <!-- <div class="col">
+            <div class="form-group">
+                <input class="form-control cust-input" [(ngModel)]='mCode' type="text" required placeholder="Search for weather classification code">
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <input class="form-control cust-input" [(ngModel)]='mName' type="text" required placeholder="Search for weather classification name">
+            </div>
+        </div> -->
+    <div class="col">
+      <div class="form-group">
+        <select class="form-control cust-input" [(ngModel)]='request.status'>
+          <option value="">status</option>
+          <option value="1">Active</option>
+          <option value="0">InActive</option>
+        </select>
+      </div>
+    </div>
+    <div class="col search_btn text-right col-2">
+      <button>
+        <i class="fa fa-search" (click)="getServiceClassification()"></i>
+      </button>
+      <button>
+        <i class="fa fa-refresh" (click)="reset();"></i>
+      </button>
+    </div>
+  </div>
+
+  <table class="table tbl_head">
+    <colgroup>
+      <col style="width:5%;" />
+      <col style="width:10%;" />
+      <col style="width:20%;" />
+      <col style="width:10%;" />
+      <col style="width:10%;" />
+      <col style="width:10%;" />
+      <col style="width:10%;" />
+      <col style="width:15%;" />
+      <col style="width:10%;" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Leave Code</th>
+        <th>Leave Name</th>
+        <th>Request Form</th>
+        <th>Medical Form</th>
+        <th>Applicable For</th>
+        <th>Max NO OF Days</th>
+        <th>Category</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+  </table>
+</section>
+<!-- fixed header layout -->
+
+<!-- fixed content layout -->
+<section id="main_content">
+  <div class="slimScroll">
+    <div class="table-responsive text-center">
+      <table class="table-striped table tbl_body">
+        <colgroup>
+          <col style="width:5%;" />
+          <col style="width:10%;" />
+          <col style="width:20%;" />
+          <col style="width:10%;" />
+          <col style="width:10%;" />
+          <col style="width:10%;" />
+          <col style="width:10%;" />
+          <col style="width:15%;" />
+          <col style="width:10%;" />
+        </colgroup>
+
+        <tbody>
+          <tr *ngFor="let coc of List | paginate: {id:'leavetype', itemsPerPage: records, currentPage: p }
+                  | filterPipe: (mCode) ? mCode:((mName)?mName :mStatus) : (mCode) ? 
+                  'measurement_code': ((mName)?'measurement_name' :'status'
+                  );let i=index;" (click)="viewRecord(coc)">
+            <td>
+              <div class="cust-check" (click)="selectedRecords(coc,$event)">
+                <input type="checkbox" [checked]="coc.checked==true" />
+                <label></label>
+              </div>
+
+            </td>
+            <td>{{coc.code}}</td>
+            <td>{{coc.name}}</td>
+            <td>
+              <div class="cust-check">
+                <input type="checkbox" [checked]="coc.reqform" disabled />
+                <label></label>
+              </div>
+            </td>
+            <td>
+              <div class="cust-check">
+                <input type="checkbox" [checked]="coc.medicalForm" disabled />
+                <label></label>
+              </div>
+            </td>
+            <td>{{coc.projEmpCatgTO.code}}</td>
+            <td>{{coc.maxallowdays}}</td>
+            <td>{{coc.projLeavePaidCatgTO.code}}</td>
+            <td>{{coc.status}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- fixed content layout -->
+
+<!-- fixed footer layout -->
+<div class="tbl_footer btns text-right" id="layout_footer">
+
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col col-sm-9 text-right" style="display: inline-block">
+      <div class="row">
+        <div class="col col-sm-6 text-right">
+          <pagination-controls id="leavetype" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary">Edit</button>
+          <button type="button" class="btn btn-danger">Deactivate</button>
+          <button class="btn btn-primary pull-right" type="button" (click)="CreateNew()">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="tanantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Leave Type Classification</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="Leave_creation" *ngIf="saveDeps" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="leavetype">
+
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Leave Code</label>
+                <input type="text " formControlName="code" class="form-control form-input " #code id="companyid" required>
+                <app-error-messages [control]="Leave_creation.controls[ 'code']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="companyname" class="form-label">Leave Name</label>
+                <input type="text " formControlName="name" class="form-control form-input " id="companyname" required>
+                <app-error-messages [control]="Leave_creation.controls[ 'name']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Request Form</label>
+                <input type="checkbox" formControlName="reqform" class="form-control form-input " id="startdate" required>
+                <app-error-messages [control]="Leave_creation.controls[ 'reqform']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="companyname" class="form-label">Medical Form</label>
+                <input type="checkbox" formControlName="medicalform" class="form-control form-input " id="enddate" required>
+                <app-error-messages [control]="Leave_creation.controls[ 'medicalform']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Applicable For</label>
+                <select class="form-control" id="businesscategory" formControlName="applicablefor">
+                  <option value="">--Select--</option>
+                  <option *ngFor="let appf of saveDeps.projEmpTypeResp.projEmpCatgTOs ||[]" [value]="appf.id">{{appf.name}}</option>
+                </select>
+                <app-error-messages [control]="Leave_creation.controls[ 'applicablefor']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="companyname" class="form-label">Max No Of Days</label>
+                <input type="number" formControlName="maxnoofdays" class="form-control form-input " id="enddate" required>
+                <app-error-messages [control]="Leave_creation.controls[ 'maxnoofdays']"></app-error-messages>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Category</label>
+                <select class="form-control" id="businesscategory" formControlName="category">
+                  <option value="">--Select--</option>
+                  <option *ngFor="let category of saveDeps.projLeavePaidResp.projLeavePaidCatgTOs ||[]" [value]="category.id">{{category.code}}</option>
+                </select>
+                <app-error-messages [control]="Leave_creation.controls[ 'category']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="Leave_creation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

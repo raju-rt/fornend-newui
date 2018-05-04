@@ -1,0 +1,351 @@
+<section id="layout_header">
+    <div class="row">
+      <div class="col col-sm-4">
+        <h2 class="ttl2">Leave Types</h2>
+      </div>
+      <div class="col">
+        <div class="form-group">
+            <input class="form-control cust-input" type="text" required placeholder="Search for Leave Code">
+          </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+            <input class="form-control cust-input" type="text" required placeholder="Search for Leave name">
+          </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <select class="form-control cust-input">
+            <option value="1">Active</option>
+            <option value="0">InActive</option>
+          </select>
+        </div>
+      </div>
+      <div class="col search_btn text-right col-2">
+        <button>
+          <i class="fa fa-search" (click)="getUsers()"></i>
+        </button>
+        <button>
+          <i class="fa fa-refresh" (click)="reset();"></i>
+        </button>
+      </div>
+    </div>
+  
+    <table class="table tbl_head">
+      <colgroup>
+        <col style="width:10%;" />
+        <col style="width:90%;" />
+      </colgroup>
+      <thead>
+          <tr>
+              <th>Select</th>
+              <th>Profile Name</th>
+            </tr>
+      </thead>
+  
+    </table>
+  </section>
+
+  <section id="main_content">
+      <div class="slimScroll ss_sm">
+        <div class="table-responsive text-center">
+          <table class="table-striped table tbl_body">
+            <colgroup>
+              <col style="width:10%;" />
+              <col style="width:90%;" />
+            </colgroup>
+            <tbody>
+                <tr *ngFor="let coc of List | paginate: {id:'leavetype', itemsPerPage: records, currentPage: p }
+                | filterPipe: (mCode) ? mCode:((mName)?mName :mStatus) : (mCode) ? 
+                'measurement_code': ((mName)?'measurement_name' :'status'
+                );let i=index;" (click)="viewRecord(coc.roleId)">
+                  <td>
+                    <div class="cust-check" (click)="selectedRecords(coc,$event)">
+                      <input type="checkbox" [checked]="coc.checked==true" />
+                      <label></label>
+                    </div>
+          
+                  </td>
+                  <td>{{coc.roleName}}</td>
+          
+                </tr>
+          
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+
+<div class="tbl_footer btns text-right" id="layout_footer">
+<div class="row ml-0 mr-0 pagination_block">
+  <div class="col col-sm-3 text-left">
+    <label>Total No OF Records :</label>
+    <select [(ngModel)]="records">
+      <option value="10">10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+      <option value="25">25</option>
+      <option value="30">30</option>
+      <option value="35">35</option>
+      <option value="40">40</option>
+      <option value="45">45</option>
+      <option value="50">50</option>
+    </select>
+  </div>
+  <div class="col col-sm-9 text-right" style="display: inline-block">
+    <div class="row">
+      <div class="col col-sm-6 text-right">
+        <pagination-controls id="leavetype" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div class="col col-sm-6 text-right">
+        <button type="button" class="btn btn-primary" [disabled]="selectedlist.length!==1" (click)="CreateNew('edit')">Edit</button>
+        <button type="button" class="btn btn-danger" [disabled]="selectedlist.length!==1" (click)="Deactivate()">Deactivate</button>
+        <button class="btn btn-primary pull-right" type="button" (click)="CreateNew()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<div *ngIf="userPrivileges.length>=1">
+    <section class="layoutTwo">
+  <div class="slim-scroll-parent">
+    <div class="tree_table">
+      <div class="tree_tbl_head row ml-0 mr-0">
+        <div class="col _th col-sm-4"> Module Name </div>
+        <div class="col _th col-sm-8"> Permissions </div>
+      </div>
+      <div class="slim-scroll ss_sm">
+          <ul class="tree">
+              <li class="parent" *ngFor="let privilege of userPrivileges |  paginate: {itemsPerPage: records, currentPage: p };let i=index">
+                <header class="row" *ngIf="privilege.childModules.length>0">
+      
+                  <span class="col addicon col col-sm-4">
+                    <i class="fa  icon "></i> {{privilege.moduleName}}</span>
+      
+      
+                  <div class="col addicon col col-sm-8 ">
+                    <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of privilege.permissionTOs">
+                      <input type="checkbox" [(ngModel)]="permission.permission">
+                      <label></label>
+                      {{permission.actionName}}
+                    </div>
+                  </div>
+      
+                </header>
+      
+                <header class="row" *ngIf="privilege.childModules.length===0">
+                  <span class="col addicon col col-sm-4">
+                    <i class="fa fa-circle "></i> {{privilege.moduleName}}</span>
+      
+      
+                  <div class="col addicon col col-sm-8 ">
+                    <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of privilege.permissionTOs">
+                      <input type="checkbox" [(ngModel)]="permission.permission">
+                      <label></label>
+                      {{permission.actionName}}
+                    </div>
+                  </div>
+                </header>
+                <!-- level 1 -->
+                <ul *ngFor="let sub1 of privilege.childModules">
+                  <li *ngIf="sub1.childModules.length>0">
+                    <header class="row">
+                      <span class="col addicon col col-sm-4">
+                        <i class="fa  icon "></i> {{sub1.moduleName}}</span>
+      
+      
+                      <div class="col addicon col col-sm-8 ">
+                        <div style="display: inline-block;    padding-right: 30px;" class="cust-check" *ngFor="let permission of sub1.permissionTOs">
+                          <input type="checkbox" [(ngModel)]="permission.permission">
+                          <label></label>
+                          {{permission.actionName}}
+                        </div>
+                      </div>
+                    </header>
+                    <!-- level 2 -->
+                    <ul *ngFor="let sub2 of sub1.childModules">
+                      <li *ngIf="sub2.childModules.length>0">
+                        <header class="row">
+                          <span class="col addicon col col-sm-4">
+                            <i class="fa  icon "></i> {{sub2.moduleName}}</span>
+      
+      
+                          <div class="col addicon col col-sm-8 ">
+                            <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of sub2.permissionTOs">
+                              <input type="checkbox" [(ngModel)]="permission.permission">
+                              <label></label>
+                              {{permission.actionName}}
+                            </div>
+                          </div>
+                        </header>
+                        <!-- level 3 -->
+                        <ul *ngFor="let sub3 of sub2.childModules">
+                          <li *ngIf="sub3.childModules.length>0">
+                            <header class="row">
+                              <span class="col addicon col col-sm-4">
+                                <i class="fa  icon "></i> {{sub3.moduleName}}</span>
+      
+      
+                              <div class="col addicon col col-sm-8 ">
+                                <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of sub3.permissionTOs">
+                                  <input type="checkbox" [(ngModel)]="permission.permission">
+                                  <label></label>
+                                  {{permission.actionName}}
+                                </div>
+                              </div>
+                            </header>
+                            <!-- level 4 -->
+                            <ul *ngFor="let sub4 of sub3.childModules">
+                              <li>
+                                <header class="row">
+                                  <span class="col addicon col col-sm-4">
+                                    <i class="fa fa-circle "></i> {{sub4.moduleName}}</span>
+      
+      
+                                  <div class="col addicon col col-sm-8 ">
+                                    <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of sub4.permissionTOs">
+                                      <input type="checkbox" [(ngModel)]="permission.permission">
+                                      <label></label>
+                                      {{permission.actionName}}
+                                    </div>
+                                  </div>
+                                </header>
+                              </li>
+                            </ul>
+      
+                          </li>
+                          <li *ngIf="sub3.childModules.length===0">
+                            <header class="row">
+                              <span class="col addicon col col-sm-4">
+                                <i class="fa fa-circle "></i> {{sub3.moduleName}}</span>
+      
+      
+                              <div class="col addicon col col-sm-8 ">
+                                <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of sub3.permissionTOs">
+                                  <input type="checkbox" [(ngModel)]="permission.permission">
+                                  <label></label>
+                                  {{permission.actionName}}
+                                </div>
+                              </div>
+                            </header>
+                          </li>
+                        </ul>
+      
+                      </li>
+                      <li *ngIf="sub2.childModules.length===0">
+                        <header class="row">
+                          <span class="col addicon col col-sm-4">
+                            <i class="fa fa-circle "></i> {{sub2.moduleName}}</span>
+      
+      
+                          <div class="col addicon col col-sm-8 ">
+                            <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of sub2.permissionTOs">
+                              <input type="checkbox" [(ngModel)]="permission.permission">
+                              <label></label>
+                              {{permission.actionName}}
+                            </div>
+                          </div>
+                        </header>
+                      </li>
+                    </ul>
+      
+                  </li>
+                  <li *ngIf="sub1.childModules.length===0">
+                    <header class="row">
+                      <span class="col addicon col col-sm-4">
+                        <i class="fa fa-circle "></i> {{sub1.moduleName}}</span>
+      
+      
+                      <div class="col addicon col col-sm-8 ">
+                        <div style="display: inline-block;     padding-right: 30px;" class="cust-check" *ngFor="let permission of sub1.permissionTOs">
+                          <input type="checkbox" [(ngModel)]="permission.permission">
+                          <label></label>
+                          {{permission.actionName}}
+                        </div>
+                      </div>
+                    </header>
+                  </li>
+      
+                </ul>
+              </li>
+      
+              <!-- end li -->
+            </ul>
+      </div>
+     
+    </div>
+
+  </div>
+
+
+<div class="tbl_footer btns text-right" id="layout_footer">
+    <div class="row ml-0 mr-0 pagination_block">
+        <div class="col col-sm-3 text-left">
+          <label>Total No OF Records :</label>
+          <select [(ngModel)]="records">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <div class="col col-sm-9 text-right" style="display: inline-block">
+          <div class="row">
+            <div class="col col-sm-6 text-right">
+              <pagination-controls maxSize="4" (pageChange)="p = $event"></pagination-controls>
+            </div>
+            <div class="col col-sm-6 text-right">
+              <button type="button" class="btn btn-success" (click)="saveRolePermission()">saveRolePermission</button>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+</div>
+
+
+</section>
+</div>
+<div class="modal fade" id="tanantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Leave Type Classification</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="UserList_creation" (ngSubmit)="saveDetails(); ">
+        <div class="modal-body">
+          <div class="tenantDetails">
+
+            <div class="row">
+              <div class="form-group col-md-6 col">
+                <label for="roleDisplay" class="form-label">Profile Name</label>
+                <input type="text " formControlName="roleDisplay" class="form-control form-input " #code id="roleDisplay" required>
+                <app-error-messages [control]="UserList_creation.controls[ 'roleDisplay']"></app-error-messages>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="UserList_creation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

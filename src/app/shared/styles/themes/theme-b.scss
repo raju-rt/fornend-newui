@@ -1,0 +1,527 @@
+
+@import '../app/variables';
+@import '../bootstrap/bootstrap/mixins/gradients';
+@import '../app/media-queries';
+
+
+//
+// Variables to change general look
+//
+
+// LAYOUT
+
+$content-bg:                    #f5f7fa;
+$aside-bg:                      #fff;
+// NAVBAR TOP
+
+$nav-top-bg:                    $brand-green;
+$nav-top-bg-start:              $nav-top-bg;
+$nav-top-bg-end:                $brand-green-light;
+$nav-header-bg:                 transparent;
+
+$nav-top-item-mobile:           $nav-top-bg;
+$nav-top-item-mobile-active:    darken($nav-top-item-mobile, 20%);
+
+$nav-top-item-desktop:          #fff;
+$nav-top-item-desktop-active:   darken($nav-top-item-desktop, 20%);
+
+// SIDEBAR
+
+$sidebar-bg:                      $aside-bg;
+
+$sidebar-item-color:              #515253;
+$sidebar-item-color-active:       $nav-top-bg;
+$sidebar-item-bg-active:          darken($sidebar-bg, 1%);
+
+$sidebar-icon-color:              inherits;
+$sidebar-icon-color-active:       $nav-top-bg;
+
+$sidebar-bullet-color:            rgba(0,0,0,.25);
+$sidebar-bullet-color-active:     $sidebar-icon-color-active;
+
+$sidebar-heading-color:           #919DA8;
+$sidebar-label-color:             $sidebar-item-color;
+
+// OFFSIDEBAR
+
+$offsidebar-bg:           #fff;
+$offsidebar-border-color: greyscale(darken($offsidebar-bg, 20%));
+$offsidebar-color:        $text-color;
+
+
+/* ========================================================================
+   Component: layout
+ ========================================================================== */
+
+body,
+.wrapper > section {
+  background-color: $content-bg;
+}
+.wrapper > .aside {
+  background-color: $aside-bg;
+}
+/* ========================================================================
+   Component: top-navbar
+ ========================================================================== */
+
+// Navbar Mobile General styles
+// ------------------------------
+
+.topnavbar {
+  background-color: #fff;
+  .navbar-header {
+    background-color: $nav-header-bg;
+    @include gradient-horizontal($nav-top-bg-start, $nav-top-bg-end);
+    @media only screen and (min-width: $mq-tablet) {
+      background-image: none;
+    }
+  }
+  .navbar-nav > li > .navbar-text {
+    color: $nav-top-item-mobile;
+  }
+  .navbar-nav > li > a,
+  .navbar-nav > .open > a {
+    color: $nav-top-item-mobile;
+    &:hover, &:focus {
+      color: $nav-top-item-mobile-active;
+    }
+  }
+
+  // Navbar link active style
+  .navbar-nav > .active > a,
+  .navbar-nav > .open   > a {
+    &, &:hover, &:focus {
+      background-color: transparent;
+    }
+  }
+
+  // the button to toggle search
+  .navbar-nav > li > [data-toggle='navbar-search'] {
+    color: $nav-top-item-desktop;
+  }
+
+  .nav-wrapper {
+    background-color: $nav-top-bg;
+    @include gradient-horizontal($nav-top-bg-start, $nav-top-bg-end);
+  }
+}
+
+// Navbar Desktop styles
+// ------------------------------
+
+@media only screen and (min-width: $mq-tablet) {
+  .panel-heading{
+    
+  }
+  // Navbar top styles
+  .topnavbar {
+    background-color: $nav-top-bg;
+    @include gradient-horizontal($nav-top-bg-start, $nav-top-bg-end);
+
+    .navbar-nav > .open > a {
+      &, &:hover, &:focus {
+        box-shadow: 0 -3px 0 rgba(255,255,255,.5) inset;
+      }
+    }
+    .navbar-nav > li > .navbar-text {
+        color: $nav-top-item-desktop;
+    }
+    .navbar-nav > li > a,
+    .navbar-nav > .open > a {
+      color: $nav-top-item-desktop;
+      &:hover, &:focus {
+        color: $nav-top-item-mobile-active;
+      }
+    }
+
+  } // .topnavbar
+
+}
+
+/* ========================================================================
+   Component: sidebar
+ ========================================================================== */
+
+.sidebar {
+  background-color: $sidebar-bg;
+
+  .nav-heading {
+    color: $sidebar-heading-color;
+  }
+
+  // Items
+  .nav {
+    > li {
+      > a,
+      > .nav-item {
+        color: $sidebar-item-color;
+        &:focus, &:hover {
+          color: $sidebar-item-color-active;
+        }
+        // Item icon
+        > em {
+          color: $sidebar-icon-color;
+        }
+      }
+
+      // Active item state
+      &.active,
+      &.open {
+        &,
+        > a,
+        .nav {
+          background-color: $sidebar-item-bg-active;
+          color: $sidebar-item-color-active;
+        }
+        > a > em {
+          color: $sidebar-icon-color-active;
+        }
+      }
+      &.active {
+        border-left-color: $sidebar-item-color-active;
+      }
+    }
+  }
+}
+
+.sidebar-subnav {
+  background-color: $sidebar-bg;
+  > .sidebar-subnav-header {
+    color: $sidebar-item-color;
+  }
+  > li  {
+    > a,
+    > .nav-item {
+      color: $sidebar-item-color;
+      &:focus, &:hover {
+        color: $sidebar-item-color-active;
+      }
+    }
+
+    &.active {
+      > a,
+      > .nav-item {
+        color: $sidebar-icon-color-active;
+        &:after {
+          border-color: $sidebar-bullet-color-active;
+          background-color: $sidebar-bullet-color-active;
+        }
+      }
+    }
+  } // li
+}
+
+/* ========================================================================
+   Component: offsidebar
+ ========================================================================== */
+
+.offsidebar {
+  border-left: 1px solid $offsidebar-border-color;
+  background-color: $offsidebar-bg;
+  color: $offsidebar-color;
+}
+// @headerCommon: #a31d35;
+
+    // $brand-green:#003A4F;
+    // $brand-green:@headerCommon +  $brand-green;
+nav.navbar-findcond { background: #fff; border-color: #ccc; box-shadow: 0 0 2px 0 #ccc; }
+nav.navbar-findcond a { color: $brand-green; }
+nav.navbar-findcond ul.navbar-nav a { color: $brand-green; border-style: solid; border-width: 0 0 2px 0; border-color: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover,
+nav.navbar-findcond ul.navbar-nav a:visited,
+nav.navbar-findcond ul.navbar-nav a:focus,
+nav.navbar-findcond ul.navbar-nav a:active { background: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover { border-color: $brand-green; }
+nav.navbar-findcond li.divider { background: #ccc; }
+nav.navbar-findcond button.navbar-toggle { background: $brand-green; border-radius: 2px; }
+nav.navbar-findcond button.navbar-toggle:hover { background: #999; }
+nav.navbar-findcond button.navbar-toggle > span.icon-bar { background: #fff; }
+nav.navbar-findcond ul.dropdown-menu { border: 0; background: #fff; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; }
+nav.navbar-findcond ul.dropdown-menu > li > a { color: #444; }
+nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: $brand-green; color: #fff; }
+nav.navbar-findcond span.badge { background: $brand-green; font-weight: normal; font-size: 11px; margin: 0 4px; }
+nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #fff; }
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    // z-index: 1000;
+    // position: fixed;
+    // left: 250px;
+    // width: 0;
+    // height: 100%;
+    // margin-left: -250px;
+    // overflow-y: auto;
+    // background: #D9D9D6;
+    // -webkit-transition: all 0.5s ease;
+    // -moz-transition: all 0.5s ease;
+    // -o-transition: all 0.5s ease;
+    // transition: all 0.5s ease;
+
+    z-index: 1000;
+    position: relative;
+    // left: 250px;
+    width: 0;
+    height: 100%;
+    // margin-left: -250px;
+    overflow-y: auto;
+    background: #D9D9D6;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        // margin-top: 53px;
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+
+.panel-default>.panel-heading {
+    background-color: $brand-green !important;
+    background-image:none !important;
+color: #fff !important;
+border-radius:0 !important;
+
+  }
+  #accordion .glyphicon { margin-right:10px; }
+  .panel{
+    border-radius:0;
+  }
+  .panel-collapse>.list-group .list-group-item:first-child {border-top-right-radius: 0;border-top-left-radius: 0;}
+  .panel-collapse>.list-group .list-group-item {border-width: 1px 0; padding: 0}
+  .panel-collapse>.list-group {margin-bottom: 0;}
+  .panel-collapse .list-group-item {border-radius:0;}
+  
+  .panel-collapse .list-group .list-group {margin: 0;margin-top: 10px;}
+  .panel-collapse .list-group-item li.list-group-item {margin: 0 -15px;border-top: 1px solid #ddd;border-bottom: 0;padding-left: 30px;}
+  .panel-collapse .list-group-item li.list-group-item:last-child {padding-bottom: 0;}
+  
+  .panel-collapse div.list-group div.list-group{margin: 0;}
+  .panel-collapse div.list-group .list-group a.list-group-item {border-top: 1px solid #ddd;border-bottom: 0;padding-left: 30px;}
+
+  .panel-collapse  {
+      background-color:white;
+  }
+  .panel-collapse .list-group, .panel-collapse .list-group .list-group-item, .panel-collapse .list-group .list-group-item .btn{
+    background-color: transparent;
+    color: #53565A;
+    border: 1px solid $brand-green;
+    border-radius: 0;
+}  
+
+
+.panel-collapse .list-group .list-group{
+    margin-top: 2px !important;
+}
+
+
+
+
+.drop-div{
+    background-image: url(../../../../assets/images/drop-here.png);
+    background-size: 150px;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    padding-bottom: 150px;
+    border-bottom: 30px solid white;
+}
+
+
+
+
+//add
+
+
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+// .sidenav a:hover {
+//     color: #f1f1f1;
+// }
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 16px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 8px;}
+}
+#dragger{
+    width: 100%;
+    min-height: 500px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+
+}
+// css for accordian
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+.panel-group .panel {
+    margin-bottom: 11px;
+}
+#div1{
+    position: absolute;
+   
+    width: 960px;
+    min-height:160px;
+    background-color:#e5e5e5;
+  }
+  .panel-collapse .list-group, .panel-collapse .list-group .list-group-item, .panel-collapse .list-group .list-group-item .btn {
+    background-color: transparent;
+    color: #53565A;
+    border: 1px solid $brand-green !important;
+    border-radius: 0;
+  }
+  .btn-info,.btn-primary{
+    background-color: $brand-green;
+
+  }
+ 
+

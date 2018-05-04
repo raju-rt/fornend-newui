@@ -1,0 +1,12 @@
+<app-header></app-header>
+<aside id="sidebarr" [class.active]="togggled">
+    <app-sidebar></app-sidebar>
+    <div class="menuIcon" (click)="togggled=!togggled">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</aside>
+<div class="layout">
+    <router-outlet></router-outlet>
+</div>

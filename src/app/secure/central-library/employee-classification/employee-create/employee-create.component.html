@@ -1,0 +1,41 @@
+<!-- <div class="tenant">
+  <h2 class="ttl2 text-center">Employee Classification</h2>
+  <form class="form_block" non-validate [formGroup]="Employee_creation" (ngSubmit)="saveDetails(); ">
+    <div class="row">
+      <div class="form-group col-md-6 col ">
+        <label for="companyid" class="form-label">Employee Classification Code</label>
+        <input type="text " formControlName="code" class="form-control form-input " (change)="verifyCode(code.value)" #code id="companyid"
+          required>
+        <app-error-messages [control]="Employee_creation.controls[ 'code']"></app-error-messages>
+
+      </div>
+      <div class="form-group col-md-6 col">
+        <label for="companyname" class="form-label">employee Classification Name</label>
+        <input type="text " formControlName="name" class="form-control form-input " id="companyname" required>
+        <app-error-messages [control]="Employee_creation.controls[ 'name']"></app-error-messages>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6 col">
+        <label for="businesscategory" class="form-label">Unit Of Messure</label>
+        <select class="form-control" id="businesscategory" formControlName="measureUnitTO">
+          <option value="">--Select--</option>
+          <option *ngFor="let measure of measuresList" [value]="measure.id">{{measure.name}}</option>
+        </select>
+        <app-error-messages [control]="Employee_creation.controls[ 'measureUnitTO']"></app-error-messages>
+      </div>
+      <div class="form-group col-md-6 col">
+      </div>
+    </div>
+    <div class="row   align-center">
+      <div class="col-md-10 col"></div>
+      <div class="col-md-2 col">
+        <button type="submit" class="btn btn-primary" [disabled]="Employee_creation.invalid || isUnique">Save</button>
+      </div>
+      <div class="col-md-5 col"></div>
+    </div>
+
+
+  </form>
+</div> -->

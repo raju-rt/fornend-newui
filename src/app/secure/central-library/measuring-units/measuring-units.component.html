@@ -1,0 +1,197 @@
+<section id="layout_header">
+
+  <div class="row">
+    <div class="col col-sm-4">
+      <h2 class="ttl2">Measuring Units</h2>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.mesureCode' type="text" required placeholder="Search for meassurement code">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <input class="form-control cust-input" [(ngModel)]='request.mesureName' type="text" required placeholder="Search for meassurement name">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <select class="form-control cust-input" [(ngModel)]='request.status'>
+          <option disabled>meassurement status</option>
+          <option value="1">Active</option>
+          <option value="0">InActive</option>
+        </select>
+      </div>
+    </div>
+    <div class="col search_btn text-right col-2">
+      <button>
+        <i class="fa fa-search" (click)="getMeasuringUnitList()"></i>
+      </button>
+      <button>
+        <i class="fa fa-refresh" (click)="reset();"></i>
+      </button>
+    </div>
+  </div>
+
+  <table class="table tbl_head">
+    <colgroup>
+      <col style="width:20%;" />
+      <col style="width:20%;" />
+      <col style="width:20%;" />
+      <col style="width:20%;" />
+      <col style="width:20%;" />
+
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Measurment Code</th>
+        <th>Measurment Name</th>
+        <th>Classification</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+  </table>
+</section>
+<!-- fixed header layout -->
+
+<!-- fixed content layout -->
+<section id="main_content">
+  <div class="slimScroll">
+    <div class="table-responsive text-center">
+      <table class="table-striped table tbl_body">
+        <tbody>
+          <tr *ngFor="let measuring of List | paginate: {id:'measuring', itemsPerPage: records, currentPage: p };let i=index;" (click)="viewRecord(measuring)">
+            <td>
+              <div class="cust-check" (click)="selectedRecords(measuring,$event)">
+                <input type="checkbox" [checked]="measuring.selected==true" />
+                <label></label>
+              </div>
+
+            </td>
+            <td>{{measuring.code}}</td>
+            <td>{{measuring.name}}</td>
+            <td>{{measuring.procurementTO.name}}</td>
+            <td>{{measuring.status}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- fixed content layout -->
+
+<!-- fixed footer layout -->
+<div class="tbl_footer btns text-right" id="layout_footer">
+  <div class="row ml-0 mr-0 pagination_block">
+    <div class="col col-sm-3 text-left">
+      <label>Total No OF Records :</label>
+      <select [(ngModel)]="records">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col col-sm-9 text-right" style="display: inline-block">
+      <div class="row">
+        <div class="col col-sm-6 text-right">
+          <pagination-controls id="measuring" maxSize="4" (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col col-sm-6 text-right">
+          <button type="button" class="btn btn-primary" [disabled]="!(selectedlist.length>0&&selectedlist.length<2)" (click)="edit()">Edit</button>
+          <button type="button" class="btn btn-danger">Deactivate</button>
+          <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#measuringunits">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="row">
+  <div class="col col-sm-6">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">1</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">2</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">3</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="col col-sm-6">
+  </div>
+</div> -->
+
+<div class="modal fade" id="measuringunits" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Measuring Units Create</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="form_block" non-validate [formGroup]="measures_creation" (ngSubmit)="saveMeasure(); ">
+        <div class="modal-body">
+          <div class="tenantDetails">
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="companyid" class="form-label">Code</label>
+                <input type="text " formControlName="measurement_code" (change)="verifyCode(code.value)" #code class="form-control form-input "
+                  id="companyid" required>
+                <app-error-messages [control]="measures_creation.controls[ 'measurement_code']"></app-error-messages>
+
+              </div>
+              <div class="form-group col-md-6 col">
+                <label for="companyname" class="form-label">Measurement Name</label>
+                <input type="text " formControlName="measurement_name" class="form-control form-input " id="companyname" required>
+                <app-error-messages [control]="measures_creation.controls[ 'measurement_name']"></app-error-messages>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-6 col ">
+                <label for="businesscategory" class="form-label">Classification</label>
+                <select class="form-control" id="businesscategory" formControlName="classification">
+                  <option value="">Business Category</option>
+                  <option *ngFor="let category of CategoryList" [value]="category.id">{{category.name}}</option>
+                </select>
+                <app-error-messages [control]="measures_creation.controls[ 'classification']"></app-error-messages>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="measures_creation.invalid || isUnique">Save</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
